@@ -396,7 +396,12 @@ def dirty_info() -> dict:
 
 
 def _read_json(p: Path):
-    return json.load(open(p, encoding="utf-8-sig"))
+    # 空状态保护：state/story/<小说>/ 尚未生成时返回 None，由调用处 `or {}` 兜底，
+    # 避免 Studio 首次启动（纯净包/新项目）在只读页面上直接 500。
+    try:
+        return json.load(open(p, encoding="utf-8-sig"))
+    except FileNotFoundError:
+        return None
 
 
 def _write_json(p: Path, data) -> None:
@@ -423,7 +428,7 @@ def list_eps() -> list[int]:
 
 
 def get_board(ep: int) -> dict:
-    return _read_json(_story_dir() / f"board_ep{ep:02d}.json")
+    return _read_json(_story_dir() / f"board_ep{ep:02d}.json") or {}
 
 
 def _ep_obj(board: dict) -> dict:
@@ -446,7 +451,7 @@ def _outline_eps() -> dict[int, dict]:
     except Exception:  # noqa: BLE001 - 缺大纲时只显示分镜统计
         return {}
     out: dict[int, dict] = {}
-    for e in o.get("episodes", []) or []:
+    for e in (o or {}).get("episodes", []) or []:
         try:
             out[int(e.get("ep"))] = e
         except (TypeError, ValueError):
@@ -480,8 +485,8 @@ def ep_summary() -> list[dict]:
 
 def get_assets() -> dict:
     return {
-        "cast": _read_json(_story_dir() / "cast.json"),
-        "art": _read_json(_story_dir() / "art.json"),
+        "cast": _read_json(_story_dir() / "cast.json") or {},
+        "art": _read_json(_story_dir() / "art.json") or {},
     }
 
 
@@ -714,13 +719,13 @@ def start_pipeline(story_name: str, opts: dict) -> tuple[bool, str]:
 
 def get_setup() -> dict:
     """上游设定：结构化画风 visual_bible + 世界设定 WorldBible 四块。"""
-    o = _read_json(_story_dir() / "outline.json")
+    o = _read_json(_story_dir() / "outline.json") or {}
     return {"visual_bible": o.get("visual_bible") or {},
             "world": o.get("world") or None}
 
 
 def save_setup(vb: dict | None, world: dict | None) -> dict:
-    o = _read_json(_story_dir() / "outline.json")
+    o = _read_json(_story_dir() / "outline.json") or {}
     if vb is not None:
         o["visual_bible"] = vb
     if world is not None:
@@ -731,7 +736,7 @@ def save_setup(vb: dict | None, world: dict | None) -> dict:
 
 
 def get_visual() -> dict | None:
-    o = _read_json(_story_dir() / "outline.json")
+    o = _read_json(_story_dir() / "outline.json") or {}
     return o.get("visual_bible")
 
 
@@ -741,7 +746,7 @@ def save_visual(vb: dict) -> None:
     Studio 的「配置」页仍保留 medium/lens 等旧字段；如果直接整体替换，
     会把上游设定页编辑的 style_keywords/main_colors/do_dont 全部冲掉。
     """
-    o = _read_json(_story_dir() / "outline.json")
+    o = _read_json(_story_dir() / "outline.json") or {}
     cur = o.get("visual_bible")
     merged = dict(cur) if isinstance(cur, dict) else {}
     merged.update({k: v for k, v in vb.items() if v not in (None, "")})
