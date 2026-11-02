@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-label="逻辑能力到 ComfyUI 工作流的映射">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/>
+    </marker>
+    <style>
+      .title { font: 700 29px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .sub { font: 400 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#5B6B7F; }
+      .col { font: 700 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#FFFFFF; }
+      .cap { font: 700 13.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#1F3A5F; }
+      .build { font: 400 13.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#0F766E; }
+      .wf { font: 400 13.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#7C2D12; }
+      .small { font: 400 12.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="#F7F9FC"/>
+  <text x="50" y="58" class="title">能力名 → 构建器 → ComfyUI 工作流</text>
+  <text x="50" y="86" class="sub">故事层只说“我要一张场景空镜”，不关心背后是 Z-Image 还是下一代模型。</text>
+
+  <!-- headers -->
+  <rect x="40" y="120" width="300" height="40" rx="10" fill="#2F6FA8"/>
+  <text x="62" y="146" class="col">逻辑能力（L2 消费）</text>
+  <rect x="430" y="120" width="300" height="40" rx="10" fill="#2A9D8F"/>
+  <text x="452" y="146" class="col">构建器（L3）</text>
+  <rect x="820" y="120" width="340" height="40" rx="10" fill="#E76F51"/>
+  <text x="842" y="146" class="col">工作流 / 模型（L4）</text>
+
+  <g>
+    <!-- row ys -->
+    <rect x="40" y="180" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="180" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="180" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="209" class="cap">character_sheet</text>
+    <text x="448" y="209" class="build">build_zimage</text>
+    <text x="838" y="209" class="wf">zimage_txt2img_workflow</text>
+
+    <rect x="40" y="240" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="240" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="240" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="269" class="cap">character_view</text>
+    <text x="448" y="269" class="build">build_qwenedit</text>
+    <text x="838" y="269" class="wf">qwenedit_img2img_workflow</text>
+
+    <rect x="40" y="300" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="300" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="300" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="329" class="cap">scene_plate</text>
+    <text x="448" y="329" class="build">build_zimage</text>
+    <text x="838" y="329" class="wf">zimage_txt2img_workflow</text>
+
+    <rect x="40" y="360" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="360" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="360" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="389" class="cap">shot_first_frame</text>
+    <text x="448" y="389" class="build">build_flux_ipadapter</text>
+    <text x="838" y="389" class="wf">FLUX + PuLID + IPAdapter（程序化）</text>
+
+    <rect x="40" y="420" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="420" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="420" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="449" class="cap">shot_first_frame_noface</text>
+    <text x="448" y="449" class="build">build_zimage</text>
+    <text x="838" y="449" class="wf">zimage_txt2img_workflow</text>
+
+    <rect x="40" y="480" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="480" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="480" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="509" class="cap">video_i2v</text>
+    <text x="448" y="509" class="build">build_ltx25_main</text>
+    <text x="838" y="509" class="wf">LTX-2.5 两段式 I2V</text>
+
+    <rect x="40" y="540" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#C7D7EA"/>
+    <rect x="430" y="540" width="300" height="46" rx="10" fill="#FFFFFF" stroke="#A7D9D0"/>
+    <rect x="820" y="540" width="340" height="46" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+    <text x="58" y="569" class="cap">tts / lipsync</text>
+    <text x="448" y="569" class="build">tts_line / latentsync_clip</text>
+    <text x="838" y="569" class="wf">Qwen3-TTS / LatentSync</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#94A3B8" stroke-width="1.8" marker-end="url(#a)">
+    <line x1="340" y1="203" x2="416" y2="203"/><line x1="730" y1="203" x2="806" y2="203"/>
+    <line x1="340" y1="263" x2="416" y2="263"/><line x1="730" y1="263" x2="806" y2="263"/>
+    <line x1="340" y1="323" x2="416" y2="323"/><line x1="730" y1="323" x2="806" y2="323"/>
+    <line x1="340" y1="383" x2="416" y2="383"/><line x1="730" y1="383" x2="806" y2="383"/>
+    <line x1="340" y1="443" x2="416" y2="443"/><line x1="730" y1="443" x2="806" y2="443"/>
+    <line x1="340" y1="503" x2="416" y2="503"/><line x1="730" y1="503" x2="806" y2="503"/>
+    <line x1="340" y1="563" x2="416" y2="563"/><line x1="730" y1="563" x2="806" y2="563"/>
+  </g>
+
+  <!-- bottom note -->
+  <rect x="40" y="625" width="1120" height="62" rx="14" fill="#FFF4DE" stroke="#E9A23B"/>
+  <text x="62" y="651" class="small" fill="#7C4A03"><tspan font-weight="700">换工作流只改三处：</tspan>capabilities.json（能力与模型名） ＋ adapters/comfy.py（节点图） ＋ workflows/*.json（UI 工作流）。</text>
+  <text x="62" y="674" class="small" fill="#7C4A03">故事层、质量门、v10.1 契约、LLM 提示词全部不动。</text>
+</svg>

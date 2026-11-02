@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="740" viewBox="0 0 1200 740" role="img" aria-label="小说到 v10.1 的七阶段流水线">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1F3A5F"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2A9D8F"/>
+    </marker>
+    <style>
+      .title { font: 700 29px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .sub { font: 400 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#5B6B7F; }
+      .h { font: 700 18px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .t { font: 400 13px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#475569; }
+      .num { font: 700 16px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#FFFFFF; }
+      .gate { font: 700 11px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#0F766E; }
+      .small { font: 400 12.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="740" fill="#F7F9FC"/>
+  <text x="50" y="58" class="title">从一部小说，到可渲染的 v10.1 契约</text>
+  <text x="50" y="86" class="sub">七个阶段，每阶段都有确定性质量门；不过门就把错误原文回喂重写。</text>
+
+  <!-- row 1 -->
+  <rect x="40" y="145" width="230" height="112" rx="14" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="2"/>
+  <text x="62" y="180" class="h">小说 / 短故事</text>
+  <text x="62" y="208" class="t">UTF-8 文本</text>
+  <text x="62" y="232" class="small">长文自动分段压缩</text>
+
+  <rect x="315" y="145" width="230" height="112" rx="14" fill="#E8F1FA" stroke="#2F6FA8" stroke-width="2"/>
+  <circle cx="343" cy="173" r="15" fill="#2F6FA8"/><text x="338" y="179" class="num">1</text>
+  <text x="368" y="179" class="h">大纲</text>
+  <text x="337" y="207" class="t">改编决策 · spine · 爽点</text>
+  <text x="337" y="231" class="small">角色 / 场景 / 道具表</text>
+
+  <rect x="590" y="145" width="230" height="112" rx="14" fill="#E8F1FA" stroke="#2F6FA8" stroke-width="2"/>
+  <circle cx="618" cy="173" r="15" fill="#2F6FA8"/><text x="613" y="179" class="num">2</text>
+  <text x="643" y="179" class="h">角色</text>
+  <text x="612" y="207" class="t">身份锁 · 服装状态</text>
+  <text x="612" y="231" class="small">定妆提示词 · 音色</text>
+
+  <rect x="865" y="145" width="230" height="112" rx="14" fill="#E8F1FA" stroke="#2F6FA8" stroke-width="2"/>
+  <circle cx="893" cy="173" r="15" fill="#2F6FA8"/><text x="888" y="179" class="num">3</text>
+  <text x="918" y="179" class="h">美术</text>
+  <text x="887" y="207" class="t">场景空镜 · 空间锚点</text>
+  <text x="887" y="231" class="small">道具设定 · 光照状态</text>
+
+  <!-- row 2 -->
+  <rect x="865" y="355" width="230" height="112" rx="14" fill="#E6F5F2" stroke="#2A9D8F" stroke-width="2"/>
+  <circle cx="893" cy="383" r="15" fill="#2A9D8F"/><text x="888" y="389" class="num">4</text>
+  <text x="918" y="389" class="h">剧本</text>
+  <text x="887" y="417" class="t">动作 / 台词节拍流</text>
+  <text x="887" y="441" class="small">场次戏剧字段 · 钩子</text>
+
+  <rect x="590" y="355" width="230" height="112" rx="14" fill="#E6F5F2" stroke="#2A9D8F" stroke-width="2"/>
+  <circle cx="618" cy="383" r="15" fill="#2A9D8F"/><text x="613" y="389" class="num">5</text>
+  <text x="643" y="389" class="h">站位</text>
+  <text x="612" y="417" class="t">2D 平面 · 左右关系</text>
+  <text x="612" y="441" class="small">对话双方可拍构图</text>
+
+  <rect x="315" y="355" width="230" height="112" rx="14" fill="#E6F5F2" stroke="#2A9D8F" stroke-width="2"/>
+  <circle cx="343" cy="383" r="15" fill="#2A9D8F"/><text x="338" y="389" class="num">6</text>
+  <text x="368" y="389" class="h">分镜</text>
+  <text x="337" y="417" class="t">逐镜首帧提示词</text>
+  <text x="337" y="441" class="small">景别 · coverage · 时长</text>
+
+  <rect x="40" y="355" width="230" height="112" rx="14" fill="#FFF4DE" stroke="#E9A23B" stroke-width="2"/>
+  <circle cx="68" cy="383" r="15" fill="#E9A23B"/><text x="63" y="389" class="num">7</text>
+  <text x="93" y="389" class="h">编译</text>
+  <text x="62" y="417" class="t">纯确定性映射</text>
+  <text x="62" y="441" class="small">时长归一 · 双画幅</text>
+
+  <!-- row1 arrows -->
+  <line x1="270" y1="201" x2="303" y2="201" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#a)"/>
+  <line x1="545" y1="201" x2="578" y2="201" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#a)"/>
+  <line x1="820" y1="201" x2="853" y2="201" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#a)"/>
+  <!-- down -->
+  <path d="M 980 257 L 980 343" fill="none" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#a)"/>
+  <!-- row2 arrows right to left -->
+  <line x1="865" y1="411" x2="832" y2="411" stroke="#2A9D8F" stroke-width="2.2" marker-end="url(#a)"/>
+  <line x1="590" y1="411" x2="557" y2="411" stroke="#2A9D8F" stroke-width="2.2" marker-end="url(#a)"/>
+  <line x1="315" y1="411" x2="282" y2="411" stroke="#2A9D8F" stroke-width="2.2" marker-end="url(#a)"/>
+
+  <!-- output -->
+  <rect x="300" y="555" width="600" height="82" rx="16" fill="#1F3A5F"/>
+  <text x="328" y="586" class="h" style="fill:#FFFFFF">v10.1 契约 + 资产清单</text>
+  <text x="328" y="614" class="t" style="fill:#D7E3F4">plan.json · script.json · storyboard.json · director.json · story_assets.json</text>
+  <path d="M 155 467 L 155 596 L 288 596" fill="none" stroke="#E9A23B" stroke-width="2.6" marker-end="url(#a)"/>
+
+  <!-- gate pills -->
+  <g fill="#E6F5F2" stroke="#A7D9D0">
+    <rect x="337" y="238" width="74" height="20" rx="10"/>
+    <rect x="612" y="238" width="74" height="20" rx="10"/>
+    <rect x="887" y="238" width="74" height="20" rx="10"/>
+    <rect x="62" y="448" width="74" height="20" rx="10"/>
+    <rect x="337" y="448" width="74" height="20" rx="10"/>
+    <rect x="612" y="448" width="74" height="20" rx="10"/>
+    <rect x="887" y="448" width="74" height="20" rx="10"/>
+  </g>
+  <g class="gate" text-anchor="middle">
+    <text x="374" y="252">质量门</text><text x="649" y="252">质量门</text><text x="924" y="252">质量门</text>
+    <text x="99" y="462">质量门</text><text x="374" y="462">质量门</text><text x="649" y="462">质量门</text><text x="924" y="462">质量门</text>
+  </g>
+
+  <!-- feedback note -->
+  <path d="M 1095 201 C 1160 201 1160 300 1095 300" fill="none" stroke="#2A9D8F" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <text x="1104" y="255" class="small" fill="#0F766E" transform="rotate(90 1104 255)">不过门 → 回喂重写</text>
+
+  <text x="50" y="690" class="small">关键点：创作只发生在 L1；L2 之后全部是确定性映射。同一个中间产物可以重复编译、人工修改、断点续跑。</text>
+</svg>

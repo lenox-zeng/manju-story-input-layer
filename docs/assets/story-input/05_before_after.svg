@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-label="传统做法与故事输入层对比">
+  <defs>
+    <style>
+      .title { font: 700 29px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .sub { font: 400 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#5B6B7F; }
+      .h { font: 700 21px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#FFFFFF; }
+      .rowh { font: 700 13px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+      .bad { font: 400 14px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#7F1D1D; }
+      .good { font: 400 14px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#064E3B; }
+      .x { font: 700 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#DC2626; }
+      .v { font: 700 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#059669; }
+      .small { font: 400 12.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="660" fill="#F7F9FC"/>
+  <text x="50" y="58" class="title">同一部小说，两种做法</text>
+  <text x="50" y="86" class="sub">输入层不是“多写几个提示词”，而是把创作、结构化、渲染三件事拆开。</text>
+
+  <!-- left -->
+  <rect x="40" y="120" width="500" height="450" rx="18" fill="#FFFFFF" stroke="#FCA5A5" stroke-width="2"/>
+  <rect x="40" y="120" width="500" height="58" rx="18" fill="#DC2626"/>
+  <rect x="40" y="160" width="500" height="18" fill="#DC2626"/>
+  <text x="64" y="157" class="h">传统：直接对着模型写提示词</text>
+
+  <!-- right -->
+  <rect x="660" y="120" width="500" height="450" rx="18" fill="#FFFFFF" stroke="#6EE7B7" stroke-width="2"/>
+  <rect x="660" y="120" width="500" height="58" rx="18" fill="#059669"/>
+  <rect x="660" y="160" width="500" height="18" fill="#059669"/>
+  <text x="684" y="157" class="h">输入层：小说进，契约出</text>
+
+  <!-- left rows -->
+  <g class="x">
+    <text x="64" y="209">✕</text><text x="64" y="271">✕</text><text x="64" y="333">✕</text>
+    <text x="64" y="395">✕</text><text x="64" y="457">✕</text><text x="64" y="519">✕</text>
+  </g>
+  <g class="bad">
+    <text x="90" y="209">每个镜头手写提示词，写到哪算哪</text>
+    <text x="90" y="271">换脸、服装漂移、前后景不连戏</text>
+    <text x="90" y="333">没有场次目标/阻力/代价，靠感觉</text>
+    <text x="90" y="395">反复试，很难精确落在 90 秒</text>
+    <text x="90" y="457">工作流一换，全部提示词重调</text>
+    <text x="90" y="519">经验留在个人手里，无法交接</text>
+  </g>
+
+  <!-- right rows -->
+  <g class="v">
+    <text x="684" y="209">✓</text><text x="684" y="271">✓</text><text x="684" y="333">✓</text>
+    <text x="684" y="395">✓</text><text x="684" y="457">✓</text><text x="684" y="519">✓</text>
+  </g>
+  <g class="good">
+    <text x="710" y="209">一部 UTF-8 小说，0 手工提示词</text>
+    <text x="710" y="271">身份锁 + 服装状态 + 全局场景 plate</text>
+    <text x="710" y="333">spine / 场次五字段 / 爽点节拍</text>
+    <text x="710" y="395">编译期自动归一，精确到目标秒数</text>
+    <text x="710" y="457">只改 capabilities + adapter + 工作流</text>
+    <text x="710" y="519">结构化中间产物，可审、可改、可续跑</text>
+  </g>
+
+  <!-- divider arrow -->
+  <circle cx="600" cy="345" r="30" fill="#15263D"/>
+  <path d="M 585 345 L 615 345 M 606 336 L 615 345 L 606 354" fill="none" stroke="#FFFFFF" stroke-width="2.4"/>
+
+  <!-- bottom -->
+  <rect x="40" y="596" width="1120" height="42" rx="12" fill="#E8F1FA"/>
+  <text x="62" y="622" class="small" fill="#1F3A5F"><tspan font-weight="700">一句话：</tspan>把“创作”和“技术实现”解耦——小说负责内容，契约负责稳定，适配层负责跟上模型迭代。</text>
+</svg>

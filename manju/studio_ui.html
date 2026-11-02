@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manju Studio · 输入层管理台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%232f5d8a'/%3E%3Ctext x='12' y='17' font-size='14' fill='%23f2f6fa' text-anchor='middle' font-family='sans-serif'%3EMS%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f5f7fa; --surface:#fff; --ink:#17202a; --muted:#667085;
+  --line:#e3e8ef; --line2:#eef2f6; --chip:#eef2f6;
+  --accent:#2f5d8a; --accent-ink:#24486b; --accent-soft:#eaf1f8;
+  --ok:#0f766e; --ok-soft:#e8f5f1; --ok-line:#bfe3d8;
+  --warn:#b45309; --warn-soft:#fff7ea; --warn-line:#f0d7ac;
+  --danger:#b42318; --danger-soft:#fef3f2; --danger-line:#f3c6c2;
+  --shadow:0 1px 2px rgba(16,24,40,.05);
+  --radius:12px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;min-height:100%}
+body{
+  background:var(--bg); color:var(--ink); font-size:14px; line-height:1.55;
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+}
+code,pre{font-family:ui-monospace,Consolas,"SFMono-Regular",Menlo,monospace}
+
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:30; min-height:58px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:9px 18px; background:rgba(245,247,250,.96);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(8px);
+}
+.brand{display:flex; align-items:baseline; gap:8px}
+.brand h1{font-size:16px; margin:0; letter-spacing:.2px}
+.brand .sub{font-size:12px; color:var(--muted)}
+.hdr-right{margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.hdr-right .selwrap{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted)}
+.hdr-right select{width:auto; min-width:150px; padding:6px 8px}
+.pill{
+  display:inline-flex; align-items:center; gap:5px; font-size:12px;
+  padding:3px 9px; border-radius:999px; background:var(--chip); color:var(--muted);
+  white-space:nowrap; max-width:260px; overflow:hidden; text-overflow:ellipsis;
+}
+.pill.ok{background:var(--ok-soft); color:var(--ok)}
+.pill.warn{background:var(--warn-soft); color:var(--warn)}
+.pill.err{background:var(--danger-soft); color:var(--danger)}
+
+/* ---------- layout ---------- */
+.layout{display:grid; grid-template-columns:216px minmax(0,1fr); min-height:calc(100vh - 58px)}
+nav{
+  position:sticky; top:58px; align-self:start; height:calc(100vh - 58px);
+  overflow:auto; padding:14px 10px 22px; background:#eef2f7;
+  border-right:1px solid var(--line);
+}
+.navsec{font-size:11px; color:var(--muted); letter-spacing:.6px; padding:10px 10px 4px; text-transform:uppercase}
+nav button{
+  position:relative; display:flex; align-items:center; gap:9px; width:100%;
+  border:0; background:transparent; color:var(--ink); text-align:left;
+  padding:9px 10px; border-radius:9px; cursor:pointer; font-size:13.5px; font-family:inherit;
+}
+nav button:hover{background:#e3e9f1}
+nav button.active{background:var(--accent); color:#fff}
+nav button .step{
+  width:19px; height:19px; flex:0 0 19px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:11px; background:#dde5ee; color:var(--accent-ink);
+}
+nav button.active .step{background:rgba(255,255,255,.2); color:#fff}
+nav button .navdot{
+  width:7px; height:7px; border-radius:50%; background:var(--warn); margin-left:auto;
+}
+main{
+  width:100%; max-width:1120px; margin:0 auto;
+  padding:24px 28px 96px; min-width:0;
+}
+body.has-publish main{padding-bottom:140px}
+
+/* ---------- generic ---------- */
+.pagehead{margin:0 0 18px}
+.pagehead h2{font-size:19px; margin:0 0 4px; letter-spacing:.2px}
+.pagehead .help{max-width:760px}
+.help{font-size:12.5px; color:var(--muted); margin:4px 0 0}
+.muted{color:var(--muted); font-size:12.5px}
+.panel{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px; margin-bottom:16px; box-shadow:var(--shadow);
+}
+.panel h3{font-size:14px; margin:0 0 3px}
+.panel .panel-sub{
+  margin:18px 0 0; padding-top:16px; border-top:1px solid var(--line2);
+}
+.panel .panel-sub h4{font-size:13px; margin:0 0 2px}
+.grid2,.grid3{display:grid; gap:12px}
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:720px){.grid2,.grid3{grid-template-columns:1fr}}
+.field label{display:block; font-size:12.5px; color:var(--muted); margin:10px 0 4px}
+.field label:first-child{margin-top:0}
+input,select,textarea{
+  width:100%; border:1px solid var(--line); border-radius:8px; padding:8px 10px;
+  font-size:13px; font-family:inherit; background:#fff; color:var(--ink);
+}
+input[type=checkbox]{width:auto; margin:0}
+textarea{min-height:76px; resize:vertical; line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-soft); border-color:var(--accent)}
+.actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:16px}
+.actions.tight{margin-top:10px}
+.btn{
+  border:1px solid var(--accent); background:var(--accent); color:#fff;
+  border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; font-family:inherit;
+}
+.btn:hover:not(:disabled){background:var(--accent-ink); border-color:var(--accent-ink)}
+.btn.ghost{background:#fff; color:var(--accent)}
+.btn.ghost:hover:not(:disabled){background:var(--accent-soft)}
+.btn.danger{background:var(--danger); border-color:var(--danger)}
+.btn.sm{padding:5px 10px; font-size:12px}
+.btn:disabled{opacity:.55; cursor:not-allowed}
+.linkbtn{border:0; background:none; color:var(--accent); cursor:pointer; font:inherit; padding:0}
+.linkbtn:hover{text-decoration:underline}
+.check{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink)}
+.adv{margin-top:16px; border-top:1px dashed var(--line); padding-top:12px}
+.adv summary{cursor:pointer; font-size:13px; color:var(--accent); width:max-content}
+.adv[open] summary{margin-bottom:8px}
+
+/* ---------- status / callout / empty ---------- */
+.statusline{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:11px 14px; margin-bottom:12px;
+}
+.statusline.ok{background:var(--ok-soft); border-color:var(--ok-line)}
+.statusline.warn{background:var(--warn-soft); border-color:var(--warn-line)}
+.statusline.err{background:var(--danger-soft); border-color:var(--danger-line)}
+.statusline b{font-size:13px}
+.dot{width:9px; height:9px; border-radius:50%; background:var(--muted); display:inline-block; flex:0 0 9px}
+.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.err{background:var(--danger)}
+.dot.run{background:var(--warn); animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.callout{
+  border-left:3px solid var(--accent); background:var(--accent-soft);
+  padding:10px 13px; border-radius:0 8px 8px 0; font-size:13px; margin:16px 0;
+}
+.callout.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+.callout.err{border-left-color:var(--danger); background:var(--danger-soft)}
+.empty{
+  text-align:center; padding:44px 24px; border:1px dashed var(--line);
+  border-radius:12px; background:var(--surface); color:var(--muted);
+}
+.empty b{display:block; color:var(--ink); font-size:15px; margin-bottom:6px}
+
+/* ---------- episode cards ---------- */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px}
+.epcard{
+  border:1px solid var(--line); border-radius:11px; background:var(--surface);
+  padding:14px; cursor:pointer; box-shadow:var(--shadow); transition:.15s;
+}
+.epcard:hover{border-color:var(--accent); transform:translateY(-1px)}
+.epcard .num{font-size:12px; font-weight:700; color:var(--accent); letter-spacing:.5px}
+.epcard .title{font-weight:650; margin:3px 0 6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.epcard .meta{font-size:12px; color:var(--muted)}
+
+/* ---------- shots ---------- */
+.scene{margin:0 0 18px}
+.scenehead{display:flex; align-items:baseline; gap:10px; margin:0 0 8px}
+.scenehead h3{font-size:13.5px; margin:0}
+.shot{
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  margin-bottom:8px; box-shadow:var(--shadow); overflow:hidden;
+}
+.shot summary{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  padding:10px 12px; cursor:pointer; list-style:none;
+}
+.shot summary::-webkit-details-marker{display:none}
+.shot summary:hover{background:#f8fafc}
+.shot[open] summary{background:#f8fafc; border-bottom:1px solid var(--line2)}
+.sid{font-weight:700; background:var(--chip); border-radius:6px; padding:2px 8px; font-size:12px}
+.tag{font-size:11px; color:var(--muted); background:var(--chip); border-radius:5px; padding:1px 6px}
+.shot-motion{flex:1; min-width:160px; color:var(--muted); font-size:12px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.shotbody{padding:12px}
+.shotbody .grid2,.shotbody .grid3{margin-top:10px}
+
+/* ---------- tabs / tables ---------- */
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px}
+.tabs button{
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  border-radius:999px; padding:6px 13px; font-size:13px; cursor:pointer; font-family:inherit;
+}
+.tabs button:hover{border-color:var(--accent)}
+.tabs button.active{background:var(--accent); border-color:var(--accent); color:#fff}
+.tabs .count{opacity:.7; font-size:11.5px}
+.tablewrap{overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+table{width:100%; border-collapse:collapse; font-size:13px; min-width:700px}
+th,td{padding:9px 10px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line2)}
+th{font-size:11.5px; color:var(--muted); font-weight:650; background:#f8fafc; white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td textarea{min-height:64px}
+td .btn{margin-top:2px}
+
+/* ---------- paths / publish ---------- */
+.paths{display:grid; grid-template-columns:112px minmax(0,1fr); gap:7px 12px; font-size:13px}
+.paths .k{color:var(--muted)}
+.paths code{background:var(--chip); border-radius:5px; padding:2px 6px; user-select:all; word-break:break-all}
+.summary-table{width:100%; border-collapse:collapse; font-size:13px; min-width:0}
+.summary-table th,.summary-table td{border-bottom:1px solid var(--line2); padding:7px 8px}
+.summary-table th{background:transparent}
+pre.errbox{
+  white-space:pre-wrap; word-break:break-word; background:var(--danger-soft);
+  border:1px solid var(--danger-line); color:var(--danger); border-radius:8px;
+  padding:10px 12px; font-size:12px; max-height:320px; overflow:auto; margin:10px 0 0;
+}
+pre.okbox{
+  white-space:pre-wrap; word-break:break-word; background:var(--ok-soft);
+  border:1px solid var(--ok-line); color:var(--ok); border-radius:8px;
+  padding:10px 12px; font-size:12px; margin:10px 0 0;
+}
+
+/* ---------- pipeline ---------- */
+.log{
+  background:#0f172a; color:#dbeafe; border-radius:10px; padding:12px;
+  font-family:ui-monospace,Consolas,Menlo,monospace; font-size:12px; line-height:1.5;
+  white-space:pre-wrap; max-height:420px; overflow:auto; margin-top:12px;
+  min-height:58px;
+}
+.log:empty::before{content:"运行日志会显示在这里…"; color:#7c8ba1}
+.log .ln{min-height:1.3em}
+.log .warn{color:#fbbf24} .log .fix{color:#4ade80}
+.log .ok{color:#4ade80; font-weight:600} .log .err{color:#f87171}
+.nowline{font-size:12.5px; color:var(--muted); margin-top:8px; min-height:1.4em;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+/* ---------- relations ---------- */
+.relwrap{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px; overflow:auto}
+
+/* ---------- trace ---------- */
+.trbar{font-size:12.5px; color:var(--muted); margin-bottom:10px; line-height:1.7}
+.trcard{border:1px solid var(--line); border-radius:8px; margin-bottom:6px; overflow:hidden; background:var(--surface)}
+.trcard.trfail{border-color:var(--danger-line); background:var(--danger-soft)}
+.trsum{display:flex; align-items:center; gap:10px; padding:8px 10px; cursor:pointer; font-size:12.5px; flex-wrap:wrap}
+.trsum:hover{background:#f5f7fb}
+.trstat{font-weight:700; width:18px; text-align:center}
+.trcard.ok .trstat{color:var(--ok)} .trcard.trfail .trstat{color:var(--danger)}
+.trstage{font-weight:600; min-width:120px}
+.tratt{color:var(--muted)} .trt{color:#98a2b3; font-family:ui-monospace,Consolas,monospace}
+.trsec{color:#344054; background:var(--chip); border-radius:6px; padding:1px 7px}
+.trmodel{color:#344054; background:#eef4ff; border:1px solid #dbe7ff; border-radius:6px;
+  padding:1px 7px; font-family:ui-monospace,Consolas,monospace; font-size:11.5px}
+.trtok{color:var(--muted); font-family:ui-monospace,Consolas,monospace; font-size:12px}
+.trcost{color:#475467; font-family:ui-monospace,Consolas,monospace; font-size:11.5px}
+.trerr{color:var(--danger); flex:1; min-width:120px}
+.trbody{display:none; padding:0 10px 10px; border-top:1px dashed var(--line)}
+.trcard.open .trbody{display:block}
+.trblk{margin-top:8px}
+.trblk b{font-size:11.5px; color:var(--muted); display:block; margin-bottom:3px}
+.trblk pre{margin:0; white-space:pre-wrap; word-break:break-word; background:#f7f8fa;
+  border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-size:11.5px;
+  max-height:280px; overflow:auto}
+.trblk.trerrbox pre{background:var(--danger-soft); border-color:var(--danger-line); color:var(--danger)}
+
+/* ---------- publish bar / toasts ---------- */
+.publishbar{
+  position:fixed; left:216px; right:0; bottom:0; z-index:25;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:11px 22px; background:var(--warn-soft);
+  border-top:1px solid var(--warn-line); box-shadow:0 -6px 20px rgba(16,24,40,.06);
+}
+.publishbar .pbtext{display:flex; align-items:center; gap:10px; min-width:0}
+.publishbar .pbtext b{font-size:13px; white-space:nowrap}
+.publishbar .pbmsg{font-size:12.5px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.publishbar .pbactions{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap}
+#toasts{position:fixed; top:14px; right:16px; z-index:100; display:flex; flex-direction:column; gap:8px; max-width:min(420px,90vw)}
+.toast{
+  padding:10px 14px; border-radius:8px; background:#fff; border:1px solid var(--line);
+  box-shadow:0 8px 24px rgba(16,24,40,.14); font-size:13px; line-height:1.5;
+}
+.toast.ok{border-left:4px solid var(--ok)}
+.toast.err{border-left:4px solid var(--danger)}
+.toast.out{opacity:0; transform:translateY(-4px); transition:.2s}
+
+/* ---------- responsive ---------- */
+@media(max-width:860px){
+  .layout{display:block}
+  nav{
+    position:sticky; top:58px; z-index:20; height:auto;
+    display:flex; align-items:center; gap:4px; overflow-x:auto;
+    padding:7px 9px; border-right:0; border-bottom:1px solid var(--line);
+  }
+  .navsec{display:none}
+  nav button{width:auto; white-space:nowrap; padding:7px 10px}
+  main{padding:16px 14px 120px}
+  .publishbar{left:0; padding:10px 14px}
+  body.has-publish main{padding-bottom:150px}
+  .hdr-right{width:100%; margin-left:0}
+  .hdr-right .selwrap{flex:1}
+  .hdr-right select{width:100%}
+  .paths{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Manju Studio</h1>
+    <span class="sub">小说 → 分镜契约</span>
+  </div>
+  <div class="hdr-right">
+    <label class="selwrap" title="当前查看/编辑哪部小说的中间产物">小说
+      <select id="novelSel" onchange="setNovel(this.value)"></select>
+    </label>
+    <span class="pill" id="modelPill">—</span>
+    <span class="pill" id="statePill">—</span>
+    <span class="pill" id="dirtyPill">—</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav id="nav">
+  <div class="navsec">流程</div>
+  <button data-view="pipeline"><span class="step">1</span>生成</button>
+  <button data-view="eps"><span class="step">2</span>分集 · 分镜</button>
+  <button data-view="assets"><span class="step">3</span>角色 · 场景 · 道具</button>
+  <button data-view="setup"><span class="step">4</span>画风 · 世界观</button>
+  <button data-view="relations">人物关系</button>
+  <div class="navsec">交付</div>
+  <button data-view="publish">发布契约<span id="navDot" class="navdot" hidden></span></button>
+  <div class="navsec">系统</div>
+  <button data-view="config">配置</button>
+  <button data-view="trace">LLM 日志</button>
+</nav>
+<main id="main"></main>
+</div>
+
+<footer id="publishBar" class="publishbar" hidden>
+  <div class="pbtext">
+    <span class="dot warn"></span>
+    <b>有修改尚未发布</b>
+    <span class="pbmsg" id="pbMsg"></span>
+  </div>
+  <div class="pbactions">
+    <button class="btn ghost sm" data-go="publish">查看发布</button>
+    <button class="btn sm" data-compile onclick="recompile()">重新编译契约</button>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+
+<script>
+/* =====================================================================
+   Manju Studio 前端
+   约定：
+   - 修改只写中间产物 state/story/<小说>/；点「重新编译契约」才写 input/。
+   - 生成页的「分集方式」决定改编成几集；「生成范围」只决定本次跑哪几集。
+   ===================================================================== */
+var state={view:'pipeline', ep:null, assetTab:'cast'};
+var OVER={eps:[],ep_stats:[],dirty:{},llm:{},studio:{},generation:{},publish:{},current:{}};
+var NOVEL='';
+var LAST_COMPILE=null;
+var pipeTimer=null, pipeLast=0, pipeFinished=false;
+
+function $(id){return document.getElementById(id);}
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+function toast(txt,cls){
+  var box=$('toasts'); if(!box)return;
+  var d=document.createElement('div');
+  d.className='toast '+(cls||'ok'); d.textContent=txt;
+  box.appendChild(d);
+  setTimeout(function(){d.classList.add('out');setTimeout(function(){d.remove();},220);},3400);
+}
+async function api(method,url,body){
+  var opt={method:method,headers:{'Content-Type':'application/json'}};
+  if(body)opt.body=JSON.stringify(body);
+  var r=await fetch(url,opt);
+  var j=await r.json();
+  if(!r.ok)throw new Error(j.error||('HTTP '+r.status));
+  return j;
+}
+
+/* ---------------- 全局刷新 ---------------- */
+async function refresh(){
+  OVER=await api('GET','/api/overview');
+  var l=OVER.llm||{};
+  $('modelPill').textContent=(l.model||'未配置模型')+(l.provider?(' · '+l.provider):'');
+  $('modelPill').className='pill'+(l.api_key?'':' err');
+  var c=OVER.current||{};
+  NOVEL=c.novel||'';
+  $('statePill').textContent=c.novel?((c.phase==='work'?'工作层':'已固化')+' · '+c.novel):'未选小说';
+  $('statePill').title=c.dir||'';
+  var d=OVER.dirty||{};
+  $('dirtyPill').textContent=d.dirty?'待发布':'已发布';
+  $('dirtyPill').className='pill '+(d.dirty?'warn':'ok');
+  $('dirtyPill').title=d.msg||'';
+  updatePublishBar(d);
+  var nv=await api('GET','/api/pipeline/novels');
+  var opts='<option value="">全部（平铺）</option>'+nv.novels.map(function(n){
+    var nm=n.name.replace(/\.txt$/,'');
+    return '<option value="'+esc(nm)+'">'+esc(nm)+'</option>';
+  }).join('');
+  if(NOVEL&&!nv.novels.some(function(n){return n.name.replace(/\.txt$/,'')===NOVEL;}))
+    opts='<option value="'+esc(NOVEL)+'">'+esc(NOVEL)+'（仅中间产物）</option>'+opts;
+  $('novelSel').innerHTML=opts;
+  $('novelSel').value=NOVEL;
+}
+
+function updatePublishBar(d){
+  d=d||OVER.dirty||{};
+  var bar=$('publishBar'), dot=$('navDot');
+  if(d.dirty){
+    $('pbMsg').textContent=d.msg||'修改已保存在中间产物，尚未写入 input/ 契约';
+    bar.hidden=false;
+    dot.hidden=false;
+    document.body.classList.add('has-publish');
+  }else{
+    bar.hidden=true;
+    dot.hidden=true;
+    document.body.classList.remove('has-publish');
+  }
+}
+
+/* ---------------- 导航 ---------------- */
+function go(view){
+  state.view=view;
+  try{localStorage.setItem('manju.view',view);}catch(e){}
+  document.querySelectorAll('#nav button').forEach(function(x){
+    x.classList.toggle('active',x.dataset.view===view);
+  });
+  var p;
+  try{
+    if(view==='pipeline')p=renderPipeline();
+    else if(view==='eps')p=renderEps();
+    else if(view==='assets')p=renderAssets();
+    else if(view==='setup')p=renderSetup();
+    else if(view==='relations')p=renderRelations();
+    else if(view==='publish')p=renderPublish();
+    else if(view==='trace')p=renderTrace();
+    else p=renderConfig();
+  }catch(e){
+    $('main').innerHTML='<div class="empty"><b>页面渲染失败</b>'+esc(e.message)+'</div>';
+  }
+  if(p&&p.catch)p.catch(function(e){
+    $('main').innerHTML='<div class="empty"><b>页面加载失败</b>'+esc(e.message)+'</div>';
+  });
+  window.scrollTo(0,0);
+}
+window.go=go;
+
+window.setNovel=async function(name){
+  try{
+    var r=await api('PUT','/api/novel/current',{novel:name});
+    NOVEL=name;
+    await refresh();
+    if(state.view==='pipeline'){
+      var sel=$('p_story');
+      if(sel&&name){
+        var want=name+'.txt';
+        var i=Array.prototype.findIndex.call(sel.options,function(o){return o.value===want;});
+        if(i>=0)sel.selectedIndex=i;
+      }
+    }else{
+      go(state.view);
+    }
+    toast('当前小说：'+(name||'全部（平铺）'));
+  }catch(e){toast('切换失败：'+e.message,'err');}
+};
+
+/* ---------------- 配置（长期设置） ---------------- */
+async function renderConfig(){
+  var l=OVER.llm||{};
+  $('main').innerHTML=
+    '<div class="pagehead"><h2>配置</h2>'
+    +'<p class="help">这里是长期设置，保存后对后续所有生成生效。'
+    +'本次生成跑哪几集、画幅和单集时长，请到「生成」页按次选择。</p></div>'
+    +'<form id="cfgForm" onsubmit="saveCfg();return false">'
+    +'<section class="panel"><h3>文本模型</h3>'
+    +'<p class="help">任何 OpenAI 兼容服务均可；provider 仅作为标签。</p>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>服务商</label><select id="c_provider">'
+    +['deepseek','openai'].map(function(p){return '<option value="'+p+'"'+(p===(l.provider||'deepseek')?' selected':'')+'>'+p+'</option>';}).join('')
+    +'</select></div>'
+    +'<div class="field"><label>模型</label><input id="c_model" value="'+esc(l.model||'')+'"></div>'
+    +'</div>'
+    +'<div class="field"><label>base_url</label><input id="c_base" value="'+esc(l.base_url||'')+'"></div>'
+    +'<div class="field"><label>API Key</label>'
+    +'<input type="password" id="c_key" placeholder="'+(l.api_key_source&&l.api_key_source!=='missing'?'已配置（'+esc(l.api_key_source)+'）；留空不改':'输入 Key（只保存在本次 Studio 会话）')+'">'
+    +'<p class="help">Key 不写入 config.json：可设环境变量 <code>DEEPSEEK_API_KEY</code> 长期使用；在页面输入则只保留到本次 Studio 退出。</p></div>'
+    +'<div class="field"><label>并行数</label><input id="c_par" value="'+esc(l.parallel??'')+'">'
+    +'<p class="help">同时生成多少集/场。生成温度固定为 0（保证契约与续跑可复现），不在此处配置。</p></div>'
+    +'</section>'
+    +'<section class="panel"><h3>改编策略</h3>'
+    +'<p class="help">默认按剧情自动分集；下面两项只影响回退/安全阀。</p>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>每集字数（仅回退分集）</label>'
+    +'<input id="c_cpe" value="'+esc(l.story_chars_per_episode||9000)+'">'
+    +'<p class="help">只有关闭情节分集、又没指定集数时才使用。</p></div>'
+    +'<div class="field"><label>自动分集上限（安全阀）</label>'
+    +'<input id="c_maxep" value="'+esc(l.story_max_auto_episodes||12)+'">'
+    +'<p class="help">防止超长小说一次生成过多集。</p></div>'
+    +'</div></section>'
+    +'<div class="actions"><button class="btn" type="submit">保存配置</button>'
+    +'<span class="help">画风与世界观在「画风 · 世界观」页编辑。</span></div>'
+    +'</form>';
+}
+async function saveCfg(){
+  try{
+    var par=parseInt($('c_par').value,10);
+    var cpe=parseInt($('c_cpe').value,10);
+    var maxep=parseInt($('c_maxep').value,10);
+    if(isNaN(par)||par<1)throw new Error('并行数必须是 ≥ 1 的整数');
+    if(isNaN(cpe)||cpe<1)throw new Error('每集字数必须是 ≥ 1 的整数');
+    if(isNaN(maxep)||maxep<1)throw new Error('自动分集上限必须是 ≥ 1 的整数');
+    var b={
+      provider:$('c_provider').value,
+      base_url:$('c_base').value,
+      model:$('c_model').value,
+      parallel:par,
+      story_chars_per_episode:cpe,
+      story_max_auto_episodes:maxep
+    };
+    var key=$('c_key').value; if(key)b.api_key=key;
+    await api('PUT','/api/config',b);
+    await refresh();
+    toast(key?'配置已保存；Key 仅在本次 Studio 会话生效':'配置已保存');
+  }catch(e){toast('保存失败：'+e.message,'err');}
+}
+window.saveCfg=saveCfg;
+
+/* ---------------- 生成 ---------------- */
+async function renderPipeline(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null;}
+  pipeLast=0; pipeFinished=false;
+  var nv=await api('GET','/api/pipeline/novels');
+  var g=OVER.generation||{};
+  var mode=g.mode||'auto';
+  var epsVal=g.episodes||'';
+  var chVal=g.chapters_per_episode||g.default_chapters||2;
+  var frm=g.from||'', to=g.to||'';
+  var ratio=g.ratio||'9:16', dur=g.duration||90;
+
+  if(!nv.novels.length){
+    $('main').innerHTML=
+      '<div class="pagehead"><h2>生成</h2></div>'
+      +'<div class="empty"><b>input/ 下还没有小说</b>'
+      +'把 .txt 放进项目的 <code>input/</code> 目录，然后刷新页面。</div>'
+      +'<div class="actions"><button class="btn" onclick="location.reload()">刷新</button></div>';
+    return;
+  }
+
+  var sel=nv.novels.map(function(n){
+    return '<option value="'+esc(n.name)+'">'+esc(n.name)+'（'+n.chars+' 字符）</option>';
+  }).join('');
+  var modeOpts=[
+    ['auto','按剧情自动分集（推荐）'],
+    ['fixed','指定总集数'],
+    ['chapters','每 N 章一集']
+  ].map(function(x){return '<option value="'+x[0]+'"'+(mode===x[0]?' selected':'')+'>'+x[1]+'</option>';}).join('');
+
+  $('main').innerHTML=
+    '<div class="pagehead"><h2>生成</h2>'
+    +'<p class="help">从小说生成中间产物，再编译为下游契约。默认续跑：失败后再次点击只会补未完成的阶段。</p></div>'
+    +'<section class="panel">'
+    +'<div class="field"><label>要生成的小说（input/ 下的 .txt）</label>'
+    +'<select id="p_story">'+sel+'</select></div>'
+    +'<div class="panel-sub"><h4>怎么分集</h4>'
+    +'<p class="help">决定整部小说改编成多少集。推荐「按剧情自动」。</p>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>分集方式</label>'
+    +'<select id="p_mode" onchange="syncMode()">'+modeOpts+'</select></div>'
+    +'<div class="field" id="p_eps_wrap"><label>总集数</label>'
+    +'<input id="p_eps" type="number" min="1" value="'+esc(epsVal||4)+'" placeholder="例如 4"></div>'
+    +'<div class="field" id="p_chep_wrap"><label>每几章一集</label>'
+    +'<input id="p_chep" type="number" min="1" value="'+esc(chVal)+'" placeholder="例如 2"></div>'
+    +'</div>'
+    +'<p class="help" id="p_mode_help"></p></div>'
+    +'<div class="panel-sub"><h4>生成范围（可选）</h4>'
+    +'<p class="help">只跑其中一段，用于续跑或局部重做；<b>不改变分集总数</b>。留空 = 全部。</p>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>起始集</label><input id="p_from" type="number" min="1" value="'+esc(frm)+'" placeholder="留空 = 第 1 集"></div>'
+    +'<div class="field"><label>结束集</label><input id="p_to" type="number" min="1" value="'+esc(to)+'" placeholder="留空 = 最后一集"></div>'
+    +'</div>'
+    +'<p class="help" id="p_summary"></p></div>'
+    +'<div class="panel-sub"><h4>画面参数</h4>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>画幅</label><select id="p_ratio">'
+    +'<option'+(ratio==='9:16'?' selected':'')+'>9:16</option>'
+    +'<option'+(ratio==='16:9'?' selected':'')+'>16:9</option></select></div>'
+    +'<div class="field"><label>单集时长（秒）</label><input id="p_dur" type="number" min="1" value="'+esc(dur)+'"></div>'
+    +'</div></div>'
+    +'<details class="adv"><summary>高级选项</summary>'
+    +'<label class="check"><input type="checkbox" id="p_clean"> 先清临时工作层再重跑</label>'
+    +'<p class="help">只删除当前小说的 <code>.work_&lt;小说名&gt;</code>；已发布成品保留。'
+    +'失败重试通常不需要勾选。</p></details>'
+    +'<div class="actions">'
+    +'<button class="btn" id="p_start" onclick="startPipe()">开始生成</button>'
+    +'<span class="help">会调用文本模型；篇幅长时可能需要十几分钟。跑完自动刷新。</span>'
+    +'</div></section>'
+    +'<div id="pipeStage"></div>'
+    +'<div id="pipeLog" class="log"></div>';
+
+  // 默认选中当前小说
+  var cur=OVER.current&&OVER.current.novel;
+  if(cur){
+    var want=cur+'.txt';
+    var i=Array.prototype.findIndex.call($('p_story').options,function(o){return o.value===want;});
+    if(i>=0)$('p_story').selectedIndex=i;
+  }
+  $('p_from').addEventListener('input',updateRangeHint);
+  $('p_to').addEventListener('input',updateRangeHint);
+  syncMode();
+  try{
+    var s=await api('GET','/api/pipeline/status');
+    if(s.lines&&s.lines.length){appendLog(s.lines);pipeLast=s.lines.length;}
+    renderPipeStatus(s);
+  }catch(e){}
+  pollPipe();
+}
+
+function syncMode(){
+  var m=$('p_mode').value;
+  $('p_eps_wrap').hidden=(m!=='fixed');
+  $('p_chep_wrap').hidden=(m!=='chapters');
+  var help={
+    auto:'程序先读全文，按情节原子/戏剧单元自动决定集数；每集字数不参与。',
+    fixed:'按指定集数拆分，适合你明确知道要出几集的情况。',
+    chapters:'按小说章节切分，每 N 章一集；适合章节节奏本身就很完整的作品。'
+  };
+  $('p_mode_help').textContent=help[m]||'';
+  updateRangeHint();
+}
+window.syncMode=syncMode;
+
+function updateRangeHint(){
+  var f=($('p_from').value||'').trim();
+  var t=($('p_to').value||'').trim();
+  var txt;
+  if(!f&&!t)txt='本次：全部集数';
+  else txt='本次：第 '+(f||'1')+' – '+(t||'末')+' 集';
+  $('p_summary').textContent=txt+'（只影响本次运行，不改变总集数）';
+}
+
+function appendLog(lines){
+  var lg=$('pipeLog'); if(!lg)return;
+  lg.insertAdjacentHTML('beforeend',lines.map(function(x){
+    var cls='ln';
+    if(/\[WARN\]/.test(x))cls+=' warn';
+    else if(/\[FIX\]/.test(x))cls+=' fix';
+    else if(/\[err\]|✗|未通过|失败|退出码/.test(x))cls+=' err';
+    else if(/通过质量门|已固化|已完成/.test(x))cls+=' ok';
+    return '<div class="'+cls+'">'+(esc(x)||' ')+'</div>';
+  }).join(''));
+  lg.scrollTop=lg.scrollHeight;
+}
+
+function renderPipeStatus(s){
+  var stg=$('pipeStage'); if(!stg)return;
+  if(!s.running&&!s.done){stg.innerHTML='';return;}
+  var dot=s.running?'<span class="dot run"></span>'
+    :(s.done?(s.ok?'<span class="dot ok"></span>':'<span class="dot err"></span>'):'<span class="dot"></span>');
+  var label=s.running?'运行中':(s.done?(s.ok?'已完成':'失败'):'空闲');
+  var cls=s.running?'':(s.done?(s.ok?'ok':'err'):'');
+  var head='<div class="statusline '+cls+'">'+dot+'<b>'+label+'</b>'
+    +'<span class="muted">'+esc(s.story||'')+'</span></div>';
+  if(s.running){
+    var last=(s.lines&&s.lines.length)?s.lines[s.lines.length-1]:'';
+    head+='<div class="nowline">'+esc(last)+'</div>';
+  }
+  if(s.done&&!s.ok){
+    head+='<div class="callout err">'+esc(s.error||'未通过质量门或模型不可用')+'</div>'
+      +'<p class="help">默认续跑：直接点「开始生成」会复用已完成的阶段。'
+      +'若怀疑临时文件损坏，展开「高级选项」勾选「先清临时工作层再重跑」。</p>'
+      +'<div class="actions"><button class="btn" onclick="startPipe()">续跑</button></div>';
+  }
+  if(s.done&&s.ok){
+    head+='<div class="callout">上游已完成。产物已写入下列目录，可继续审阅或发布。</div>';
+    if(s.out||s.work){
+      head+='<div class="paths">'
+        +(s.out?'<span class="k">编译产物</span><code>'+esc(s.out)+'</code>':'')
+        +(s.work?'<span class="k">中间/可编辑</span><code>'+esc(s.work)+'</code>':'')
+        +'</div>';
+    }
+    head+='<div class="actions">'
+      +'<button class="btn" data-go="eps">审阅分集分镜</button>'
+      +'<button class="btn ghost" data-go="publish">发布契约</button>'
+      +'<button class="btn ghost" onclick="startPipe()">再跑一次</button>'
+      +'</div>';
+  }
+  stg.innerHTML=head;
+}
+
+function pollPipe(){
+  if(pipeTimer)return;
+  pipeTimer=setInterval(async function(){
+    try{
+      var s=await api('GET','/api/pipeline/status');
+      if($('pipeLog')&&s.lines.length>pipeLast){
+        appendLog(s.lines.slice(pipeLast));pipeLast=s.lines.length;
+      }
+      renderPipeStatus(s);
+      var b=$('p_start');
+      if(b){
+        b.disabled=!!s.running;
+        b.textContent=s.running?'生成中…':'开始生成';
+      }
+      if(!s.running){
+        clearInterval(pipeTimer);pipeTimer=null;
+        if(s.done&&!pipeFinished){pipeFinished=true;refresh();}
+      }
+    }catch(e){}
+  },1000);
+}
+
+window.startPipe=async function(){
+  try{
+    var story=$('p_story').value;
+    if(!story){toast('请选择小说','err');return;}
+    var mode=$('p_mode').value;
+    var opts={ratio:$('p_ratio').value,duration:parseFloat($('p_dur').value)||90};
+    var episodes='auto', chapters=0;
+    if(mode==='fixed'){
+      var n=parseInt($('p_eps').value,10);
+      if(!(n>=1)){toast('总集数必须 ≥ 1','err');return;}
+      episodes=n;
+    }else if(mode==='chapters'){
+      var c=parseInt($('p_chep').value,10);
+      if(!(c>=1)){toast('每几章一集必须 ≥ 1','err');return;}
+      chapters=c;
+    }
+    opts.episodes=episodes;
+    // 显式传 0：覆盖 config 里可能残留的章节默认值，保证「按剧情自动」生效。
+    opts.chapters_per_episode=chapters;
+    var f=parseInt($('p_from').value,10);
+    var t=parseInt($('p_to').value,10);
+    if(f&&t&&t<f){toast('结束集不能小于起始集','err');return;}
+    if(f)opts.from=f;
+    if(t)opts.to=t;
+    var cb=$('p_clean');
+    if(cb&&cb.checked)opts.clean=true;
+    var r=await api('POST','/api/pipeline/run',{story:story,opts:opts});
+    if(!r.ok){toast(r.msg,'err');return;}
+    pipeLast=0;pipeFinished=false;
+    var lg=$('pipeLog');if(lg)lg.innerHTML='';
+    var stg=$('pipeStage');if(stg)stg.innerHTML='';
+    var b=$('p_start');if(b){b.disabled=true;b.textContent='生成中…';}
+    toast(r.msg);
+    if(!pipeTimer)pollPipe();
+    await refresh();
+  }catch(e){toast('启动失败：'+e.message,'err');}
+};
+
+/* ---------------- 分集 / 分镜 ---------------- */
+async function renderEps(){
+  var rows=OVER.ep_stats||[];
+  if(!rows.length){
+    $('main').innerHTML=
+      '<div class="pagehead"><h2>分集 · 分镜</h2></div>'
+      +'<div class="empty"><b>还没有分镜产物</b>'
+      +'先到「生成」页跑一部小说，或在上方切换有产物的小说。</div>'
+      +'<div class="actions"><button class="btn" data-go="pipeline">去生成</button></div>';
+    return;
+  }
+  var g='<div class="pagehead"><h2>分集 · 分镜</h2>'
+    +'<p class="help">点击某一集查看并修改镜头。修改先保存在中间产物；'
+    +'点底部「重新编译契约」后才会写入 input/。</p></div><div class="grid">';
+  g+=rows.map(function(r){
+    return '<div class="epcard" data-ep="'+r.ep+'">'
+      +'<div class="num">EP '+String(r.ep).padStart(2,'0')+'</div>'
+      +'<div class="title">'+esc(r.title||'未命名')+'</div>'
+      +'<div class="meta">'+r.scenes+' 场 · '+r.cuts+' 镜 · '+r.seconds+'s</div>'
+      +'</div>';
+  }).join('');
+  g+='</div><div class="callout">分集标题来自 outline；镜头数据来自 board_epNN.json。</div>';
+  $('main').innerHTML=g;
+}
+
+async function openEp(ep){
+  state.ep=ep;
+  var d;
+  try{d=await api('GET','/api/ep/'+ep);}catch(e){toast('读取失败：'+e.message,'err');return;}
+  var rows=OVER.ep_stats||[];
+  var idx=rows.findIndex(function(r){return r.ep===ep;});
+  var prev=idx>0?rows[idx-1].ep:null;
+  var next=idx>=0&&idx<rows.length-1?rows[idx+1].ep:null;
+  var groups={};
+  d.cuts.forEach(function(c){var k=String(c.scene);(groups[k]=groups[k]||[]).push(c);});
+  var keys=Object.keys(groups).sort(function(a,b){return Number(a)-Number(b);});
+  var body='';
+  if(!keys.length){
+    body='<div class="empty"><b>这一集没有镜头</b>检查 board_ep'+String(ep).padStart(2,'0')+'.json 是否完整。</div>';
+  }
+  keys.forEach(function(sc){
+    var cuts=groups[sc];
+    body+='<section class="scene"><div class="scenehead"><h3>场景 '+esc(sc)+'</h3>'
+      +'<span class="help">'+cuts.length+' 镜</span></div>';
+    cuts.forEach(function(c){body+=shotCard(c);});
+    body+='</section>';
+  });
+  $('main').innerHTML=
+    '<div class="pagehead">'
+    +'<button class="linkbtn" onclick="renderEps()">← 返回分集</button>'
+    +'<h2 style="margin-top:6px">EP '+String(ep).padStart(2,'0')+' · '+esc(d.title||'未命名')+'</h2>'
+    +'<p class="help">'+esc(d.synopsis||'')+'</p>'
+    +'<p class="help">'+d.scene_count+' 场 · '+d.cuts.length+' 镜 · '+d.seconds+'s</p>'
+    +'</div>'
+    +'<div class="actions tight" style="margin-bottom:14px">'
+    +(prev?'<button class="btn ghost sm" data-open="'+prev+'">← EP'+String(prev).padStart(2,'0')+'</button>':'')
+    +(next?'<button class="btn ghost sm" data-open="'+next+'">EP'+String(next).padStart(2,'0')+' →</button>':'')
+    +'<button class="btn ghost sm" onclick="toggleShots(true)">全部展开</button>'
+    +'<button class="btn ghost sm" onclick="toggleShots(false)">全部收起</button>'
+    +'</div>'
+    +body
+    +'<div class="callout">改完镜头先点该镜的「保存该镜」，再点底部「重新编译契约」发布。</div>';
+  window.scrollTo(0,0);
+}
+window.openEp=openEp;
+
+function shotCard(c){
+  var idx=c.idx;
+  return '<details class="shot">'
+    +'<summary><span class="sid">#'+(idx+1)+'</span>'
+    +'<span class="tag">'+esc(c.size||'—')+'</span>'
+    +'<span class="tag">'+esc(c.seconds==null?'—':(c.seconds+'s'))+'</span>'
+    +'<span class="tag">'+esc(c.coverage||'—')+'</span>'
+    +'<span class="tag">'+esc(c.camera||'—')+'</span>'
+    +'<span class="shot-motion">'+esc(c.shot||c.motion||'')+'</span>'
+    +'</summary>'
+    +'<div class="shotbody">'
+    +'<div class="field"><label>shot（这一镜的内容摘要）</label>'
+    +'<input data-u="shot" data-i="'+idx+'" value="'+esc(c.shot||'')+'"></div>'
+    +'<div class="field"><label>prompt_en（首帧画面提示）</label>'
+    +'<textarea data-u="prompt_en" data-i="'+idx+'">'+esc(c.prompt)+'</textarea></div>'
+    +'<div class="grid3">'
+    +'<div class="field"><label>景别</label><input data-u="size" data-i="'+idx+'" value="'+esc(c.size||'')+'"></div>'
+    +'<div class="field"><label>时长（秒）</label><input data-u="seconds" data-i="'+idx+'" value="'+esc(c.seconds==null?'':c.seconds)+'"></div>'
+    +'<div class="field"><label>运镜</label><input data-u="camera" data-i="'+idx+'" value="'+esc(c.camera||'')+'"></div>'
+    +'</div>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>motion（画面内动作）</label>'
+    +'<textarea data-u="motion" data-i="'+idx+'" rows="2">'+esc(c.motion||'')+'</textarea></div>'
+    +'<div class="field"><label>coverage</label><input data-u="coverage" data-i="'+idx+'" value="'+esc(c.coverage||'')+'"></div>'
+    +'</div>'
+    +'<div class="field"><label>cut_reason（为什么在这里切）</label>'
+    +'<input data-u="cut_reason" data-i="'+idx+'" value="'+esc(c.cut_reason||'')+'"></div>'
+    +'<div class="actions tight"><button class="btn sm" data-shot="'+idx+'">保存该镜</button>'
+    +'<span class="help">只保存到中间产物；发布请用底部按钮。</span></div>'
+    +'</div></details>';
+}
+
+function toggleShots(open){
+  document.querySelectorAll('.shot').forEach(function(d){d.open=open;});
+}
+window.toggleShots=toggleShots;
+
+async function saveShot(idx){
+  try{
+    var up={};
+    document.querySelectorAll('[data-u][data-i="'+idx+'"]').forEach(function(el){up[el.dataset.u]=el.value;});
+    await api('PUT','/api/ep/'+state.ep+'/shot/'+idx,{updates:up});
+    await refresh();
+    toast('镜头已保存（待发布）');
+  }catch(e){toast('保存失败：'+e.message,'err');}
+}
+window.saveShot=saveShot;
+
+/* ---------------- 资产 ---------------- */
+async function renderAssets(){
+  var a;
+  try{a=await api('GET','/api/assets');}catch(e){
+    $('main').innerHTML='<div class="pagehead"><h2>角色 · 场景 · 道具</h2></div>'
+      +'<div class="empty"><b>还没有资产产物</b>先到「生成」页生成一部小说。</div>';
+    return;
+  }
+  var tab=state.assetTab||'cast';
+  var cast=a.cast&&a.cast.characters||[];
+  var scenes=a.art&&a.art.scenes||[];
+  var props=a.art&&a.art.props||[];
+  var tabs='<div class="tabs">'
+    +tabBtn('cast','角色',cast.length,tab)
+    +tabBtn('scene','场景',scenes.length,tab)
+    +tabBtn('prop','道具',props.length,tab)
+    +'</div>';
+  var body='';
+  if(tab==='cast')body=castTable(cast);
+  else if(tab==='scene')body=sceneTable(scenes);
+  else body=propTable(props);
+  $('main').innerHTML=
+    '<div class="pagehead"><h2>角色 · 场景 · 道具</h2>'
+    +'<p class="help">这里编辑的是文本资产；角色身份图/三视图由实现层生成，'
+    +'输入层只提供 identity prompt 与结构化状态。</p></div>'
+    +tabs+'<div class="panel" style="padding:12px">'+body+'</div>'
+    +'<div class="callout">修改后点每行的「保存」，再点底部「重新编译契约」。</div>';
+}
+function tabBtn(k,label,n,cur){
+  return '<button data-tab="'+k+'" class="'+(cur===k?'active':'')+'">'
+    +label+' <span class="count">'+n+'</span></button>';
+}
+function castTable(rows){
+  var g='<div class="tablewrap"><table><thead><tr>'
+    +'<th style="width:64px">id</th><th style="width:130px">name</th>'
+    +'<th>identity_prompt</th><th>negative_prompt</th><th style="width:70px"></th>'
+    +'</tr></thead><tbody>';
+  rows.forEach(function(c){
+    g+='<tr><td>'+esc(c.id)+'</td>'
+      +'<td><input data-a="cast" data-i="'+esc(c.id)+'" data-f="name" value="'+esc(c.name)+'"></td>'
+      +'<td><textarea data-a="cast" data-i="'+esc(c.id)+'" data-f="prompt">'+esc(c.image&&c.image.prompt)+'</textarea></td>'
+      +'<td><textarea data-a="cast" data-i="'+esc(c.id)+'" data-f="negative_prompt">'+esc(c.image&&c.image.negative_prompt)+'</textarea></td>'
+      +'<td><button class="btn ghost sm" data-save="cast" data-id="'+esc(c.id)+'">保存</button></td></tr>';
+  });
+  return g+'</tbody></table></div>';
+}
+function sceneTable(rows){
+  var g='<div class="tablewrap"><table><thead><tr>'
+    +'<th style="width:64px">id</th><th style="width:130px">name</th>'
+    +'<th>plate_prompt</th><th>negative_prompt</th><th style="width:70px"></th>'
+    +'</tr></thead><tbody>';
+  rows.forEach(function(s){
+    g+='<tr><td>'+esc(s.id)+'</td>'
+      +'<td><input data-a="scene" data-i="'+esc(s.id)+'" data-f="name" value="'+esc(s.name)+'"></td>'
+      +'<td><textarea data-a="scene" data-i="'+esc(s.id)+'" data-f="prompt">'+esc(s.image&&s.image.prompt)+'</textarea></td>'
+      +'<td><textarea data-a="scene" data-i="'+esc(s.id)+'" data-f="negative_prompt">'+esc(s.image&&s.image.negative_prompt)+'</textarea></td>'
+      +'<td><button class="btn ghost sm" data-save="scene" data-id="'+esc(s.id)+'">保存</button></td></tr>';
+  });
+  return g+'</tbody></table></div>';
+}
+function propTable(rows){
+  var g='<div class="tablewrap"><table><thead><tr>'
+    +'<th style="width:64px">id</th><th style="width:130px">name</th>'
+    +'<th>prompt</th><th style="width:100px">scale</th><th style="width:70px"></th>'
+    +'</tr></thead><tbody>';
+  rows.forEach(function(p){
+    g+='<tr><td>'+esc(p.id)+'</td>'
+      +'<td><input data-a="prop" data-i="'+esc(p.id)+'" data-f="name" value="'+esc(p.name)+'"></td>'
+      +'<td><textarea data-a="prop" data-i="'+esc(p.id)+'" data-f="prompt">'+esc(p.image&&p.image.prompt)+'</textarea></td>'
+      +'<td><input data-a="prop" data-i="'+esc(p.id)+'" data-f="scale" value="'+esc(p.scale||'')+'"></td>'
+      +'<td><button class="btn ghost sm" data-save="prop" data-id="'+esc(p.id)+'">保存</button></td></tr>';
+  });
+  return g+'</tbody></table></div>';
+}
+async function saveAsset(kind,id,btn){
+  try{
+    var up={};
+    btn.closest('tr').querySelectorAll('[data-a][data-i]').forEach(function(el){
+      if(el.dataset.a===kind&&el.dataset.i===id)up[el.dataset.f]=el.value;
+    });
+    await api('PUT','/api/assets',{kind:kind,id:id,updates:up});
+    await refresh();
+    toast('资产已保存（待发布）');
+  }catch(e){toast('保存失败：'+e.message,'err');}
+}
+window.saveAsset=saveAsset;
+
+/* ---------------- 画风 / 世界观 ---------------- */
+async function renderSetup(){
+  var s;
+  try{s=await api('GET','/api/setup');}catch(e){s={};}
+  var vb=s.visual_bible||{}, w=s.world||{};
+  $('main').innerHTML=
+    '<div class="pagehead"><h2>画风 · 世界观</h2>'
+    +'<p class="help">保存到当前小说的 state/story/&lt;小说名&gt;/outline.json；'
+    +'改完需要重新编译。若下面为空，说明这部小说还没生成大纲。</p></div>'
+    +'<section class="panel"><h3>画风 visual_bible</h3>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>style_keywords（逗号分隔）</label><input id="s_style" value="'+esc((vb.style_keywords||[]).join(', '))+'"></div>'
+    +'<div class="field"><label>main_colors（hex，逗号分隔）</label><input id="s_colors" value="'+esc((vb.main_colors||[]).join(', '))+'"></div>'
+    +'</div>'
+    +'<div class="field"><label>reference_styles（逗号分隔）</label><input id="s_ref" value="'+esc((vb.reference_styles||[]).join(', '))+'"></div>'
+    +'<div class="field"><label>do_dont（每行一条，禁忌自动加“忌：”）</label><textarea id="s_dd" style="min-height:100px">'+esc(dd2lines(vb.do_dont))+'</textarea></div>'
+    +'<div class="panel-sub"><h4>镜头语言细节（可选）</h4><div class="grid3">'
+    +'<div class="field"><label>medium</label><input id="v_medium" value="'+esc(vb.medium||'')+'"></div>'
+    +'<div class="field"><label>film_stock</label><input id="v_stock" value="'+esc(vb.film_stock||'')+'"></div>'
+    +'<div class="field"><label>lens</label><input id="v_lens" value="'+esc(vb.lens||'')+'"></div>'
+    +'<div class="field"><label>lighting</label><input id="v_light" value="'+esc(vb.lighting||'')+'"></div>'
+    +'<div class="field"><label>palette</label><input id="v_pal" value="'+esc(vb.palette||'')+'"></div>'
+    +'<div class="field"><label>texture</label><input id="v_tex" value="'+esc(vb.texture||'')+'"></div>'
+    +'<div class="field"><label>contrast</label><input id="v_con" value="'+esc(vb.contrast||'')+'"></div>'
+    +'</div></div></section>'
+    +'<section class="panel"><h3>世界设定 WorldBible</h3>'
+    +'<p class="help">四块均为 JSON 数组；空数组表示未定义。</p>'
+    +'<div class="grid2">'
+    +'<div class="field"><label>factions 势力</label><textarea id="w_f">'+esc(JSON.stringify(w.factions||[],null,1))+'</textarea></div>'
+    +'<div class="field"><label>geography 地理</label><textarea id="w_g">'+esc(JSON.stringify(w.geography||[],null,1))+'</textarea></div>'
+    +'<div class="field"><label>timeline 时间线</label><textarea id="w_t">'+esc(JSON.stringify(w.timeline||[],null,1))+'</textarea></div>'
+    +'<div class="field"><label>rules 规则</label><textarea id="w_r">'+esc(JSON.stringify(w.rules||[],null,1))+'</textarea></div>'
+    +'</div></section>'
+    +'<div class="actions"><button class="btn" onclick="saveSetup()">保存画风与世界观</button></div>'
+    +'<div class="callout">保存后点底部「重新编译契约」才会更新 input/。</div>';
+}
+function dd2lines(dd){
+  if(Array.isArray(dd))return dd.filter(Boolean).join('\n');
+  if(dd&&typeof dd==='object'){
+    var good=Array.isArray(dd.DO)?dd.DO:(Array.isArray(dd.do)?dd.do:[]);
+    var bad=Array.isArray(dd["DON'T"])?dd["DON'T"]:(Array.isArray(dd.DONT)?dd.DONT:(Array.isArray(dd.dont)?dd.dont:[]));
+    bad=bad.map(function(x){var t=String(x);return /^(不要|不准|禁止|切勿|别|忌|No |Don't|Avoid)/.test(t)?t:('忌：'+t);});
+    return good.concat(bad).filter(Boolean).join('\n');
+  }
+  return '';
+}
+async function saveSetup(){
+  try{
+    function L(v){return v.split(',').map(function(x){return x.trim();}).filter(Boolean);}
+    function J(id,name){
+      var raw=$(id).value.trim();
+      if(!raw)return [];
+      try{var arr=JSON.parse(raw);if(!Array.isArray(arr))throw 0;return arr;}
+      catch(e){throw new Error(name+' 不是合法 JSON 数组');}
+    }
+    var vb={
+      style_keywords:L($('s_style').value),
+      main_colors:L($('s_colors').value),
+      reference_styles:L($('s_ref').value),
+      do_dont:$('s_dd').value.split('\n').map(function(x){return x.trim();}).filter(Boolean)
+    };
+    [['medium','v_medium'],['film_stock','v_stock'],['lens','v_lens'],['lighting','v_light'],
+     ['palette','v_pal'],['texture','v_tex'],['contrast','v_con']].forEach(function(p){
+      var v=$(p[1]).value.trim();if(v)vb[p[0]]=v;
+    });
+    var w={factions:J('w_f','factions'),geography:J('w_g','geography'),
+      timeline:J('w_t','timeline'),rules:J('w_r','rules')};
+    await api('PUT','/api/setup',{visual_bible:vb,world:w});
+    await refresh();
+    toast('画风与世界观已保存（待发布）');
+  }catch(e){toast('保存失败：'+e.message,'err');}
+}
+window.saveSetup=saveSetup;
+
+/* ---------------- 人物关系 ---------------- */
+async function renderRelations(){
+  var d;
+  try{d=await api('GET','/api/cast/relations');}catch(e){
+    $('main').innerHTML='<div class="pagehead"><h2>人物关系</h2></div>'
+      +'<div class="empty"><b>还没有角色数据</b>先到「生成」页生成一部小说。</div>';
+    return;
+  }
+  var chars=d.characters||[];
+  if(!chars.length){
+    $('main').innerHTML='<div class="pagehead"><h2>人物关系</h2></div>'
+      +'<div class="empty"><b>还没有角色数据</b></div>';
+    return;
+  }
+  var byId={};
+  chars.forEach(function(c,i){byId[c.id]=i;});
+  var W=820,H=560,cx=W/2,cy=H/2,r=200,n=chars.length;
+  var pos=chars.map(function(_,i){var a=-Math.PI/2+2*Math.PI*i/n;
+    return{x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};});
+  var colors=['#2f5d8a','#0f766e','#b45309','#7c3aed','#b91c1c','#0e7490','#4d7c0f','#be185d','#7f1d1d','#1d4ed8'];
+  var relTypes={};
+  chars.forEach(function(c){c.relationships.forEach(function(rel){var k=rel.type||'关联';relTypes[k]=(relTypes[k]||0)+1;});});
+  var typeColor={};
+  Object.keys(relTypes).forEach(function(k,i){typeColor[k]=colors[i%colors.length];});
+  var g='<div class="pagehead"><h2>人物关系</h2>'
+    +'<p class="help">关系来自 cast.persona.relationship_spec；连线颜色=关系类型，悬停可看备注。</p></div>'
+    +'<div class="relwrap"><svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="max-width:100%;height:auto">';
+  chars.forEach(function(c,si){c.relationships.forEach(function(rel){
+    var ti=byId[rel.target];if(ti==null)return;
+    var p=pos[si],q=pos[ti];var col=typeColor[rel.type||'关联']||'#888';
+    g+='<line x1="'+p.x+'" y1="'+p.y+'" x2="'+q.x+'" y2="'+q.y+'" stroke="'+col+'" stroke-width="1.5" opacity="0.7">'
+      +'<title>'+esc(c.name)+' → '+esc(rel.target)+'：'+esc(rel.type)+'　'+esc(rel.note)+'</title></line>';
+    var mx=(p.x+q.x)/2,my=(p.y+q.y)/2;
+    g+='<text x="'+mx+'" y="'+my+'" font-size="10" fill="'+col+'" text-anchor="middle">'+esc(rel.type)+'</text>';
+  });});
+  chars.forEach(function(c,si){var p=pos[si];
+    g+='<circle cx="'+p.x+'" cy="'+p.y+'" r="26" fill="#fff" stroke="'+colors[si%colors.length]+'" stroke-width="2"></circle>'
+      +'<text x="'+p.x+'" y="'+p.y+'" text-anchor="middle" font-size="11" fill="#17202a" dominant-baseline="central">'+esc(c.name)+'</text>';
+  });
+  g+='</svg></div><div class="actions">';
+  Object.keys(typeColor).forEach(function(k){
+    g+='<span class="tag" style="color:'+typeColor[k]+';border:1px solid '+typeColor[k]+'">'+esc(k)+'</span>';
+  });
+  g+='</div>';
+  var loose=[];
+  chars.forEach(function(c){c.relationships.forEach(function(rel){
+    if(byId[rel.target]==null)loose.push(c.name+' → '+rel.target+'（'+rel.type+'）');
+  });});
+  if(loose.length){
+    g+='<h3 style="font-size:13px;margin-top:18px">未在图中的关系</h3>'
+      +'<p class="help">'+loose.map(esc).join('；')+'</p>';
+  }
+  $('main').innerHTML=g;
+}
+
+/* ---------------- 发布 ---------------- */
+async function renderPublish(){
+  var p;
+  try{p=await api('GET','/api/publish');OVER.publish=p;}
+  catch(e){p=OVER.publish||{};}
+  var d=p.dirty||OVER.dirty||{};
+  var rows=p.episodes||[];
+  var head='<div class="pagehead"><h2>发布契约</h2>'
+    +'<p class="help">把中间产物校验并编译成下游契约。'
+    +'这一步不调用文本模型；会先跑质量门，再跑 gate/drama 审计。</p></div>';
+  if(!p.novel){
+    $('main').innerHTML=head+'<div class="empty"><b>还没有选择小说</b>'
+      +'先到「生成」页生成一部小说，或在顶部选择已有产物。</div>'
+      +'<div class="actions"><button class="btn" data-go="pipeline">去生成</button></div>';
+    return;
+  }
+  var status='<div class="statusline '+(d.dirty?'warn':'ok')+'">'
+    +'<span class="dot '+(d.dirty?'warn':'ok')+'"></span>'
+    +'<b>'+(d.dirty?'有未发布的修改':'契约已是最新')+'</b>'
+    +'<span class="help">'+esc(d.msg||'')+'</span></div>';
+  var paths='<section class="panel"><h3>产物位置</h3><div class="paths">'
+    +'<span class="k">小说</span><span>'+esc(p.novel)+'</span>'
+    +'<span class="k">中间/可编辑</span><code>'+esc(p.work||'—')+'</code>'
+    +'<span class="k">编译产物</span><code>'+esc(p.out||'—')+'</code>'
+    +'<span class="k">状态</span><span>'+(p.compiled?'已生成 input/ 契约':'尚未编译')+'</span>'
+    +'</div></section>';
+  var stats='';
+  if(rows.length){
+    stats='<section class="panel"><h3>本次将发布的集数</h3>'
+      +'<table class="summary-table"><thead><tr><th>集</th><th>标题</th><th>场</th><th>镜</th><th>时长</th></tr></thead><tbody>'
+      +rows.map(function(r){
+        return '<tr><td>EP '+String(r.ep).padStart(2,'0')+'</td><td>'+esc(r.title||'—')+'</td>'
+          +'<td>'+r.scenes+'</td><td>'+r.cuts+'</td><td>'+r.seconds+'s</td></tr>';
+      }).join('')
+      +'</tbody></table></section>';
+  }else{
+    stats='<div class="empty"><b>还没有可分集发布的分镜</b>先完成一次生成。</div>';
+  }
+  var result='';
+  if(LAST_COMPILE){
+    result=LAST_COMPILE.ok
+      ?'<pre class="okbox">已发布 '+esc(LAST_COMPILE.written)+' 个文件 / '
+        +esc((LAST_COMPILE.eps||[]).length)+' 集\n'+esc(LAST_COMPILE.out||'')
+        +(LAST_COMPILE.warnings?('\n软门警告：'+esc(LAST_COMPILE.warnings)+' 条'):'')
+        +((LAST_COMPILE.repairs&&LAST_COMPILE.repairs.length)
+          ?('\n自动修复站位：\n  '+esc(LAST_COMPILE.repairs.join('\n  '))):'')
+        +'\n'+esc(LAST_COMPILE.t||'')+'</pre>'
+      :'<pre class="errbox">'+esc(LAST_COMPILE.error||'发布失败')+'\n'+esc(LAST_COMPILE.t||'')+'</pre>';
+  }
+  $('main').innerHTML=head+status+paths+stats
+    +'<section class="panel"><h3>发布</h3>'
+    +'<p class="help">硬门或 gate/drama 审计不通过时会返回可读错误，修改标记会保留，'
+    +'不会悄悄写出半成品。编译可以重复执行。</p>'
+    +'<div class="actions">'
+    +'<button class="btn" data-compile onclick="recompile()">重新编译契约</button>'
+    +'<button class="btn ghost" data-go="eps">去分镜页</button>'
+    +'</div>'+result+'</section>';
+}
+window.renderPublish=renderPublish;
+
+async function recompile(){
+  var btns=document.querySelectorAll('[data-compile]');
+  btns.forEach(function(b){b.disabled=true;b.textContent='编译中…';});
+  try{
+    var r=await api('POST','/api/compile');
+    LAST_COMPILE={ok:true,written:r.written,eps:r.eps,out:r.out,
+      warnings:r.warnings,repairs:r.repairs||[],t:new Date().toLocaleString()};
+    toast('已发布：'+r.written+' 个文件 / '+r.eps.length+' 集');
+    await refresh();
+    if(state.view==='publish')renderPublish();
+  }catch(e){
+    LAST_COMPILE={ok:false,error:e.message,t:new Date().toLocaleString()};
+    toast('发布失败：'+e.message,'err');
+    if(state.view==='publish')renderPublish();
+  }finally{
+    btns.forEach(function(b){b.disabled=false;b.textContent='重新编译契约';});
+  }
+}
+window.recompile=recompile;
+
+/* ---------------- LLM 日志 ---------------- */
+async function renderTrace(){
+  $('main').innerHTML='<div class="pagehead"><h2>LLM 日志</h2></div>'
+    +'<div id="trHead" class="trbar">加载中…</div><div id="trList"></div>';
+  var d;
+  try{d=await api('GET','/api/trace');}catch(e){$('trHead').textContent='读取失败：'+e.message;return;}
+  var es=d.entries||[];
+  var sm=d.summary||{}, cost=sm.cost||{};
+  var models=Object.keys(sm.models||{});
+  var modelTxt=models.length?models.map(function(m){return esc(m);}).join(' / '):'—';
+  var cacheTotal=Number(sm.cache_hit_tokens||0)+Number(sm.cache_miss_tokens||0);
+  var cacheTxt=cacheTotal
+    ? ' · 缓存命中 '+(100*Number(sm.cache_hit_tokens||0)/cacheTotal).toFixed(1)
+      +'%（命中 '+fmtInt(sm.cache_hit_tokens)+' / 未命中 '+fmtInt(sm.cache_miss_tokens)+'）'
+    : '';
+  var costTxt=(cost.offpeak_cny!=null&&cost.peak_cny!=null)
+    ? ' · 估算费用 <b>¥'+fmtCny(cost.offpeak_cny)+'–¥'+fmtCny(cost.peak_cny)
+      +'</b>（空闲–高峰，官方价 '+esc(cost.price_date||'')+'）'
+    : '';
+  var unknownTxt=(cost.unknown_models&&cost.unknown_models.length)
+    ? ' · 未知模型按 Flash 估算：'+cost.unknown_models.map(esc).join(' / ')
+    : '';
+  var inferredTxt=sm.model_inferred_calls
+    ? ' · '+fmtInt(sm.model_inferred_calls)+' 条旧记录按当前配置推断模型（标 *）'
+    : '';
+  $('trHead').innerHTML='共 '+esc(d.total)+' 条调用 · 模型 '+modelTxt
+    +'<br>输入 '+fmtInt(sm.in_tokens)+' · 输出 '+fmtInt(sm.out_tokens)+' tok'
+    +cacheTxt+costTxt+unknownTxt+inferredTxt
+    +'<br>数据源 <code>state/llm_trace.jsonl</code>'
+    +(d.mtime?(' · 更新于 '+esc(d.mtime)):'')
+    +(d.error?(' · 读取错误：'+esc(d.error)):'')
+    +' · 点击任意一条可展开提示词 / 输入 / 模型输出';
+  if(!es.length){$('trList').innerHTML='<p class="trbar">暂无 LLM 调用记录（跑一次生成后出现）。</p>';return;}
+  $('trList').innerHTML=es.map(function(e){
+    var ok=e.ok!==false;
+    var model=e.model
+      ? '<span class="trmodel" title="'+(e.model_inferred?'旧记录未写模型，按当前配置推断':'本次请求模型')+'">'
+        +esc(e.model)+(e.model_inferred?'*':'')+'</span>'
+      : '';
+    var hasTokens=(Number(e.in_tokens||0)+Number(e.out_tokens||0))>0;
+    var costHtml=(hasTokens&&e.cost_offpeak_cny!=null&&e.cost_peak_cny!=null)
+      ? '<span class="trcost" title="官方价估算：空闲–高峰">≈¥'+fmtCny(e.cost_offpeak_cny)
+        +'–'+fmtCny(e.cost_peak_cny)+'</span>'
+      : '';
+    return '<div class="trcard '+(ok?'ok':'trfail')+'">'
+      +'<div class="trsum" onclick="this.parentNode.classList.toggle(\'open\')">'
+      +'<span class="trstat">'+(ok?'OK':'×')+'</span>'
+      +'<span class="trstage">'+esc(e.stage||'')+'</span>'
+      +model
+      +'<span class="tratt">第'+((e.attempt||0)+1)+'次</span>'
+      +'<span class="trt">'+esc(e.t||'')+'</span>'
+      +(e.secs!=null?'<span class="trsec">'+e.secs+'s</span>':'')
+      +'<span class="trtok">'+(e.in_tokens||0)+' → '+(e.out_tokens||0)+' tok</span>'
+      +costHtml
+      +(ok?'':'<span class="trerr">'+esc(e.error||'输出不符合 Schema')+'</span>')
+      +'</div><div class="trbody">'
+      +trBlock('错误',e.error,'trerrbox')
+      +trBlock('模型（本次请求）',e.model
+        ? e.model+(e.model_inferred?'（旧记录，按当前配置推断）':'') : '')
+      +trBlock('费用估算（CNY）',(hasTokens&&e.cost_offpeak_cny!=null&&e.cost_peak_cny!=null)
+        ? '空闲 '+fmtCny(e.cost_offpeak_cny)+' / 高峰 '+fmtCny(e.cost_peak_cny) : '')
+      +trBlock('System（系统提示词，前400字）',e.system)
+      +trBlock('User（输入，前600字）',e.user)
+      +trBlock('Output（模型输出，前6000字）',e.output)
+      +'</div></div>';
+  }).join('');
+}
+function fmtInt(n){
+  n=Number(n||0);
+  return isFinite(n)?n.toLocaleString('en-US'):'0';
+}
+function fmtCny(n){
+  n=Number(n||0);
+  if(!isFinite(n))n=0;
+  var d=n>=1?3:(n>=0.01?4:6);
+  return n.toFixed(d).replace(/\.?0+$/,'');
+}
+function trBlock(label,text,cls){
+  if(!text)return '';
+  return '<div class="trblk'+(cls?' '+cls:'')+'"><b>'+label+'</b><pre>'+esc(text)+'</pre></div>';
+}
+
+/* ---------------- 事件委托 ---------------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-go]');
+  if(b){go(b.dataset.go);return;}
+  b=e.target.closest('[data-ep]');
+  if(b){openEp(parseInt(b.dataset.ep,10));return;}
+  b=e.target.closest('[data-open]');
+  if(b){openEp(parseInt(b.dataset.open,10));return;}
+  b=e.target.closest('[data-tab]');
+  if(b){state.assetTab=b.dataset.tab;renderAssets();return;}
+  b=e.target.closest('[data-shot]');
+  if(b){saveShot(parseInt(b.dataset.shot,10));return;}
+  b=e.target.closest('[data-save]');
+  if(b){saveAsset(b.dataset.save,b.dataset.id,b);return;}
+});
+$('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  go(b.dataset.view);
+});
+
+/* ---------------- 启动 ---------------- */
+var startView='pipeline', startEp=null, startOpen=false;
+try{
+  var qs=new URLSearchParams(location.search);
+  startView=qs.get('view')||localStorage.getItem('manju.view')||'pipeline';
+  startEp=parseInt(qs.get('ep'),10)||null;
+  startOpen=qs.get('open')==='1';
+}catch(e){}
+refresh().then(function(){
+  go(startView);
+  if(startView==='eps'&&startEp){
+    openEp(startEp).then(function(){if(startOpen)toggleShots(true);});
+  }
+}).catch(function(e){
+  $('main').innerHTML='<div class="empty"><b>读取配置失败</b>'+esc(e.message)+'</div>';
+});
+</script>
+</body>
+</html>

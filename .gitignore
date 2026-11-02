@@ -1,0 +1,44 @@
+# ---- secrets: never commit ----
+config.json
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+
+# ---- runtime / generated ----
+state/*
+!state/.gitkeep
+output/*
+!output/.gitkeep
+logs/*
+!logs/.gitkeep
+# 纯净包不附带样书；所有小说默认忽略，避免误传私有内容。
+input/*
+!input/.gitkeep
+*.log
+*.zip
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

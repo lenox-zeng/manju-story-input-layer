@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-label="故事输入层的三道质量闸门">
+  <defs>
+    <style>
+      .title { font: 700 29px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .sub { font: 400 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#5B6B7F; }
+      .h { font: 700 20px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .item { font: 400 14px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#334155; }
+      .tag { font: 700 12px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+      .small { font: 400 12.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+      .check { font: 700 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#0F766E; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="#F7F9FC"/>
+  <text x="50" y="58" class="title">三道闸门，把问题挡在出图之前</text>
+  <text x="50" y="86" class="sub">故事层先拦一次，编译器再修一次，最后用下游 gate + drama 严格审计确认。</text>
+
+  <!-- card 1 -->
+  <rect x="40" y="125" width="350" height="440" rx="18" fill="#FFFFFF" stroke="#2F6FA8" stroke-width="2"/>
+  <rect x="40" y="125" width="350" height="58" rx="18" fill="#2F6FA8"/>
+  <rect x="40" y="165" width="350" height="18" fill="#2F6FA8"/>
+  <text x="66" y="162" class="h" fill="#FFFFFF">① 故事层质量门</text>
+  <text x="66" y="205" class="small">LLM 每生成一步，立刻做确定性校验；</text>
+  <text x="66" y="224" class="small">不过门把错误原文回喂重写。</text>
+
+  <g class="check">
+    <text x="66" y="252">✓</text><text x="66" y="282">✓</text><text x="66" y="312">✓</text>
+    <text x="66" y="342">✓</text><text x="66" y="372">✓</text><text x="66" y="402">✓</text>
+    <text x="66" y="432">✓</text><text x="66" y="462">✓</text><text x="66" y="492">✓</text>
+  </g>
+  <g class="item">
+    <text x="90" y="252">8–12 场，每场 8–14 秒</text>
+    <text x="90" y="282">20 秒内必须有一次“抉择”</text>
+    <text x="90" y="312">15–60 秒必须“受挫 / 代价”</text>
+    <text x="90" y="342">6–12 句台词，单句 ≤18 字</text>
+    <text x="90" y="372">每场 goal / obstacle / turn / cost / info</text>
+    <text x="90" y="402">每场 ≥4 镜，全集 35–60 镜</text>
+    <text x="90" y="432">同框人脸上限可配（默认不限）</text>
+    <text x="90" y="462">首帧提示词语言可配、无运镜词</text>
+    <text x="90" y="492">剧本预规划 coverage 硬配额</text>
+  </g>
+
+  <!-- card 2 -->
+  <rect x="425" y="125" width="350" height="440" rx="18" fill="#FFFFFF" stroke="#2A9D8F" stroke-width="2"/>
+  <rect x="425" y="125" width="350" height="58" rx="18" fill="#2A9D8F"/>
+  <rect x="425" y="165" width="350" height="18" fill="#2A9D8F"/>
+  <text x="451" y="162" class="h" fill="#FFFFFF">② 编译期自动归一</text>
+  <text x="451" y="205" class="small">不再让模型“精确凑 90 秒”，</text>
+  <text x="451" y="224" class="small">编译器用确定性算法把结构对齐。</text>
+
+  <g class="check">
+    <text x="451" y="252">✓</text><text x="451" y="282">✓</text><text x="451" y="312">✓</text>
+    <text x="451" y="342">✓</text><text x="451" y="372">✓</text><text x="451" y="402">✓</text>
+    <text x="451" y="432">✓</text><text x="451" y="462">✓</text><text x="451" y="492">✓</text>
+  </g>
+  <g class="item">
+    <text x="475" y="252">分镜总时长精确等于单集目标</text>
+    <text x="475" y="282">差值均摊，每镜仍保持 1.0–3.2s</text>
+    <text x="475" y="312">台词镜头不会被压到念不完</text>
+    <text x="475" y="342">script 与 storyboard 共用同一时钟</text>
+    <text x="475" y="372">台词 at_sec 自动钉进对应镜头</text>
+    <text x="475" y="402">同时写 9:16 与 16:9 两套 framing</text>
+    <text x="475" y="432">setup / payoff 自动补足 ≥3 组</text>
+    <text x="475" y="462">道具 / 人物 / 服装状态 id 闭环</text>
+    <text x="475" y="492">输出纯结构化，可人工修改再编译</text>
+  </g>
+
+  <!-- card 3 -->
+  <rect x="810" y="125" width="350" height="440" rx="18" fill="#FFFFFF" stroke="#E76F51" stroke-width="2"/>
+  <rect x="810" y="125" width="350" height="58" rx="18" fill="#E76F51"/>
+  <rect x="810" y="165" width="350" height="18" fill="#E76F51"/>
+  <text x="836" y="162" class="h" fill="#FFFFFF">③ 下游严格审计</text>
+  <text x="836" y="205" class="small">编译完立即跑 gate + drama；</text>
+  <text x="836" y="224" class="small">有 block 就返回非零，不进入渲染。</text>
+
+  <g class="check">
+    <text x="836" y="252">✓</text><text x="836" y="282">✓</text><text x="836" y="312">✓</text>
+    <text x="836" y="342">✓</text><text x="836" y="372">✓</text><text x="836" y="402">✓</text>
+    <text x="836" y="432">✓</text><text x="836" y="462">✓</text><text x="836" y="492">✓</text>
+  </g>
+  <g class="item">
+    <text x="860" y="252">场景时长合计 = 单集目标 ±0.2s</text>
+    <text x="860" y="282">台词时间落在某镜头的窗口内</text>
+    <text x="860" y="312">同角色同镜台词不重叠</text>
+    <text x="860" y="342">spine 六字段 / power_rule 完整</text>
+    <text x="860" y="372">setup / payoff 镜头顺序合法</text>
+    <text x="860" y="402">coverage 配额：reaction / insert / …</text>
+    <text x="860" y="432">静态镜头 ≤85%；关键拍必须运镜</text>
+    <text x="860" y="462">双画幅、时长、景别多样性</text>
+    <text x="860" y="492">block 汇总后一次打印，便于修</text>
+  </g>
+
+  <!-- bottom -->
+  <rect x="40" y="600" width="1120" height="72" rx="16" fill="#15263D"/>
+  <text x="68" y="632" class="h" fill="#FFFFFF">结果：不会再出现“跑到出图 / 出片才发现剧本结构不对”</text>
+  <text x="68" y="656" class="small" style="fill:#D7E3F4">相关回归：故事层端到端测试 + gate 回归 124 项通过（6 项跳过）；编译产物在测试中同时通过 gate 与 drama 严格门。</text>
+</svg>

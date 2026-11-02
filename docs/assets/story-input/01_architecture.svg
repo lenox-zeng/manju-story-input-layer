@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-label="故事输入层四层解耦架构">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1F3A5F"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2A9D8F"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#E76F51"/>
+    </marker>
+    <style>
+      .title { font: 700 30px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#15263D; }
+      .sub { font: 400 15px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#5B6B7F; }
+      .h { font: 700 19px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+      .t { font: 400 14px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#334155; }
+      .small { font: 400 12.5px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; fill:#64748B; }
+      .tag { font: 700 12px "Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="680" fill="#F7F9FC"/>
+  <text x="60" y="62" class="title">四层解耦：小说只进 L1，ComfyUI 只接 L4</text>
+  <text x="60" y="90" class="sub">输入层负责“讲什么、怎么拍”；渲染层负责“用什么模型把它做出来”。</text>
+
+  <!-- story boundary -->
+  <rect x="300" y="118" width="500" height="470" rx="18" fill="#FFFFFF" stroke="#CBD5E1" stroke-dasharray="7 6"/>
+  <text x="322" y="146" class="small" fill="#2F6FA8">故事输入层 · 与具体引擎无关</text>
+
+  <!-- novel -->
+  <rect x="50" y="280" width="185" height="140" rx="14" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="2"/>
+  <text x="72" y="318" class="h" fill="#1F3A5F">小说 / 短故事</text>
+  <text x="72" y="348" class="t">UTF-8 纯文本</text>
+  <text x="72" y="372" class="t">唯一创作输入</text>
+  <rect x="72" y="388" width="118" height="24" rx="12" fill="#E8F1FA"/>
+  <text x="90" y="405" class="tag" fill="#2F6FA8">0 手工提示词</text>
+
+  <!-- L1 -->
+  <rect x="340" y="170" width="420" height="118" rx="14" fill="#E8F1FA" stroke="#2F6FA8" stroke-width="2"/>
+  <rect x="360" y="188" width="52" height="26" rx="13" fill="#2F6FA8"/>
+  <text x="374" y="207" class="tag" fill="#FFFFFF">L1</text>
+  <text x="424" y="207" class="h" fill="#1F3A5F">故事层</text>
+  <text x="360" y="240" class="t">大纲 · 角色 · 美术 · 剧本 · 站位 · 分镜</text>
+  <text x="360" y="266" class="small">LLM 生成 + 确定性质量门回喂</text>
+
+  <!-- L2 -->
+  <rect x="340" y="320" width="420" height="118" rx="14" fill="#E6F5F2" stroke="#2A9D8F" stroke-width="2"/>
+  <rect x="360" y="338" width="52" height="26" rx="13" fill="#2A9D8F"/>
+  <text x="374" y="357" class="tag" fill="#FFFFFF">L2</text>
+  <text x="424" y="357" class="h" fill="#1F3A5F">v10.1 契约</text>
+  <text x="360" y="390" class="t">plan · script · storyboard · director</text>
+  <text x="360" y="416" class="small">纯结构化、可版本化、可人工修改</text>
+
+  <!-- L3 -->
+  <rect x="340" y="470" width="420" height="94" rx="14" fill="#FFF4DE" stroke="#E9A23B" stroke-width="2"/>
+  <rect x="360" y="488" width="52" height="26" rx="13" fill="#E9A23B"/>
+  <text x="374" y="507" class="tag" fill="#FFFFFF">L3</text>
+  <text x="424" y="507" class="h" fill="#1F3A5F">能力注册表</text>
+  <text x="360" y="540" class="t">capabilities.json：逻辑能力 → 构建器 / 资产路径</text>
+
+  <!-- ComfyUI -->
+  <rect x="860" y="170" width="290" height="394" rx="18" fill="#FDEBE6" stroke="#E76F51" stroke-width="2"/>
+  <text x="885" y="205" class="h" fill="#9A3412">ComfyUI 执行层</text>
+  <rect x="882" y="225" width="246" height="70" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+  <text x="900" y="252" class="tag" fill="#9A3412">L4 工作流</text>
+  <text x="900" y="276" class="small">zimage · qwenedit · flux · LTX</text>
+  <rect x="882" y="312" width="246" height="66" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+  <text x="900" y="338" class="tag" fill="#9A3412">出图 / 视频</text>
+  <text x="900" y="360" class="small">首帧 · I2V · 场景 plate</text>
+  <rect x="882" y="395" width="246" height="66" rx="10" fill="#FFFFFF" stroke="#F4B8A8"/>
+  <text x="900" y="421" class="tag" fill="#9A3412">配音 / 口型</text>
+  <text x="900" y="443" class="small">TTS · LatentSync</text>
+  <rect x="882" y="478" width="246" height="60" rx="10" fill="#E76F51"/>
+  <text x="925" y="514" class="h" fill="#FFFFFF">成片</text>
+
+  <!-- arrows -->
+  <line x1="235" y1="350" x2="328" y2="250" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#arrow)"/>
+  <line x1="550" y1="288" x2="550" y2="318" stroke="#1F3A5F" stroke-width="2.2" marker-end="url(#arrow)"/>
+  <line x1="760" y1="375" x2="848" y2="330" stroke="#2A9D8F" stroke-width="2.2" marker-end="url(#arrowTeal)"/>
+  <text x="772" y="330" class="small" fill="#2A9D8F">读写契约</text>
+  <line x1="760" y1="515" x2="848" y2="452" stroke="#E76F51" stroke-width="2.2" marker-end="url(#arrowOrange)"/>
+  <text x="770" y="498" class="small" fill="#C2410C">能力调用</text>
+
+  <text x="60" y="590" class="t">换模型 / 换节点 / 换工作流：<tspan font-weight="700" fill="#C2410C">只改 L3 + L4</tspan></text>
+  <text x="60" y="618" class="small">L1 故事层和 L2 契约完全不动；同一份契约可以接 ComfyUI，也可以接别的渲染后端。</text>
+</svg>
