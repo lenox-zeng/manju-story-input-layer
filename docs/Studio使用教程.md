@@ -75,7 +75,7 @@ python -m manju.studio --port 8092 --host 127.0.0.1
 
 这里只放**长期生效**的设置，保存到 `config.json`：
 
-- **模型服务商（provider）/ base_url / model**：走 **OpenAI 兼容协议**，`provider` 只是标签（下拉含 `deepseek` / `openai`），实际由 `base_url` + `model` + Key 三者决定服务。默认 `https://api.deepseek.com/v1`，模型如 `deepseek-v4-pro`（更强）/ `deepseek-flash`（更快，默认）；也可填任意 OpenAI 兼容端点（如 `https://api.openai.com/v1`、火山方舟、本地 vLLM/Ollama）。
+- **模型服务商（provider）/ base_url / model**：走 **OpenAI 兼容协议**，`provider` 只是标签（下拉含 `deepseek` / `openai` / `doubao` / `zhipu` / `moonshot` / `qwen` / `custom`），实际由 `base_url` + `model` + Key 三者决定服务。默认 `https://api.deepseek.com/v1`，模型如 `deepseek-v4-pro`（更强）/ `deepseek-flash`（更快，默认）；也可填任意 OpenAI 兼容端点（如 `https://api.openai.com/v1`、火山方舟、本地 vLLM/Ollama）。常见服务商 base_url/模型对照与选型约束见 `docs/模型服务商配置指南.md`。
 - **API Key**：留空则沿用环境变量或旧配置。**在页面输入的新 Key 只保存在 Studio 进程内存**，随生成子进程下发，不写 `config.json`；界面只显示来源和掩码，不显示完整 Key。Studio 重启后需要重新输入，长期使用请设 `DEEPSEEK_API_KEY`。
 - **并行数**：同时生成多少集/场。**温度不在这里配置**：各生成阶段已固定为
   `0.0`（长篇卷摘要 `0.2`），保证契约字段、镜头编号和续跑结果可复现。

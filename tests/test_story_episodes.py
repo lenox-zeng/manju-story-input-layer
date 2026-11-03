@@ -294,7 +294,11 @@ def test_story_cli_version_and_doctor(root, capsys):
 
 
 def test_config_example_has_no_notes_or_duplicate_capability_keys():
-    """示例配置只保留可执行字段，能力项以 story.* 为唯一来源。"""
+    """示例配置只保留可执行字段，能力项以 story.* 为唯一来源。
+
+    llm.api_key 允许以空字符串占位（模板不含真实密钥，密钥优先环境变量）；
+    temperature 保持不出现（各阶段温度固定 0.0/0.2）。
+    """
     from pathlib import Path
 
     p = Path(__file__).resolve().parents[1] / "config.example.json"
@@ -315,7 +319,7 @@ def test_config_example_has_no_notes_or_duplicate_capability_keys():
     assert "llm_mode" not in data.get("pipeline", {})
     assert data["story"]["max_shot_seconds"] == 3.2
     assert data["story"]["max_segment_seconds"] == 15.0
-    assert "api_key" not in data["llm"]
+    assert data["llm"]["api_key"] == ""
     assert "temperature" not in data["llm"]
 
 

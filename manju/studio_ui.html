@@ -481,7 +481,7 @@ async function renderConfig(){
     +'<p class="help">任何 OpenAI 兼容服务均可；provider 仅作为标签。</p>'
     +'<div class="grid2">'
     +'<div class="field"><label>服务商</label><select id="c_provider">'
-    +['deepseek','openai'].map(function(p){return '<option value="'+p+'"'+(p===(l.provider||'deepseek')?' selected':'')+'>'+p+'</option>';}).join('')
+    +['deepseek','openai','doubao','zhipu','moonshot','qwen','custom'].map(function(p){return '<option value="'+p+'"'+(p===(l.provider||'deepseek')?' selected':'')+'>'+p+'</option>';}).join('')
     +'</select></div>'
     +'<div class="field"><label>模型</label><input id="c_model" value="'+esc(l.model||'')+'"></div>'
     +'</div>'
