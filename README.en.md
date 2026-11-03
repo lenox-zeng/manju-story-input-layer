@@ -2,6 +2,12 @@
 
 > **A novel in, a renderable anime-drama contract out.**
 
+> **Copyright**
+>
+> **All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+>
+> Some code is AI-assisted and has been human-reviewed and revised.
+
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Contract](https://img.shields.io/badge/contract-v10.3-green)
 ![Tests](https://img.shields.io/badge/tests-262%20passed-brightgreen)
@@ -449,4 +455,6 @@ Covers: parse/encode/chapter fallback → auto/manual episode split → long-tex
 
 ## License
 
-For learning and research only. The repository does not currently include a separate open-source license file; contact the author before commercial use or redistribution.
+**All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+
+For reference only; copying, modification or redistribution without written permission is prohibited. This repository carries no open-source license; any use beyond viewing for reference (copying, modification, redistribution, commercial use, re-publication) requires the author's written permission. Some code is AI-assisted and has been human-reviewed and revised.

@@ -2,6 +2,14 @@
 
 > **一部小说进去，一套可渲染的漫剧契约出来。**
 
+> **版权声明 · Copyright**
+>
+> **All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+>
+> **仅供浏览参考，未经书面许可，禁止复制、修改、分发。**
+>
+> 部分代码由 AI 辅助生成，已经过人工审阅与修改。
+
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Contract](https://img.shields.io/badge/contract-v10.3-green)
 ![Tests](https://img.shields.io/badge/tests-262%20passed-brightgreen)
@@ -457,4 +465,6 @@ python scripts\check_contract_sync.py
 
 ## 许可证
 
-仅供学习与研究使用。本项目当前未附带单独的开源许可证文件；如需商用或再分发，请先联系作者。
+**All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+
+仅供浏览参考，未经书面许可，禁止复制、修改、分发。本项目未附带任何开源许可证；除浏览参考外的一切使用（复制、修改、分发、商用、再发布）均须先获得作者书面许可。部分代码由 AI 辅助生成，已经过人工审阅与修改。
