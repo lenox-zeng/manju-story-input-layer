@@ -4,18 +4,20 @@
 
 > **版权声明 · Copyright**
 >
-> **All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+> **Copyright (c) 2026 lenox-zeng. All Rights Reserved.**
 >
-> **仅供浏览参考，未经书面许可，禁止复制、修改、分发。**
+> 本项目为**专有软件**，不是开源项目。仅允许通过 GitHub 浏览参考；未经作者书面许可，禁止复制、修改、改编、分发、商用或再发布。完整条款见 [LICENSE](LICENSE)。
+>
+> This is **proprietary software**, not open source. Viewing via GitHub is permitted for reference only. Copying, modification, adaptation, distribution, commercial use or re-publication requires prior written permission. See [LICENSE](LICENSE).
 >
 > 部分代码由 AI 辅助生成，已经过人工审阅与修改。
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![Contract](https://img.shields.io/badge/contract-v10.3-green)
-![Tests](https://img.shields.io/badge/tests-262%20passed-brightgreen)
+![Contract](https://img.shields.io/badge/contract-v10.2-green)
+![Tests](https://img.shields.io/badge/tests-243%20passed%20%2F%206%20skipped-brightgreen)
 ![GPU](https://img.shields.io/badge/GPU-not%20required-lightgrey)
 
-[English](./README.en.md) · [快速开始](#快速开始) · [两种使用方式](#两种使用方式) · [文档](#文档) · 版本 v2.0 / 契约 v10.2
+[English](./README.en.md) · [快速开始](#快速开始) · [两种使用方式](#两种使用方式) · [文档](#文档) · [许可证](LICENSE) · 版本 v2.0 / 输入契约 v10.3 / 输出契约 v10.2
 
 Manju 是一个**小说 → 剧本 → 分镜 → 渲染契约**的自动化流水线。它把"写小说"与"操作 AI 模型"彻底分离：你只管把小说丢进来，它负责解析、压缩、分集、写剧本、做分镜，最终产出一份**纯结构化、与具体引擎无关**的渲染契约。下游无论用 ComfyUI、Seedance 还是别的引擎，都只消费这份契约。
 
@@ -457,6 +459,8 @@ python scripts\check_contract_sync.py
 
 ## 参与贡献
 
+> 本项目为专有软件，不接受未经作者书面同意的外部代码贡献。以下检查供作者维护和已获授权的合作者使用。
+
 - 提交前请先跑离线验收：`python scripts\verify_offline.py`（预期 **243 passed / 6 skipped**）。
 - 改了 `manju/schemas.py` 或契约文档后，请跑 `python scripts\check_contract_sync.py` 核对字段覆盖。
 - 不要提交 `config.json`、真实 API Key、`state/`、`input/` 下的私有小说；这些路径已被 `.gitignore` 忽略。
@@ -465,6 +469,6 @@ python scripts\check_contract_sync.py
 
 ## 许可证
 
-**All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+本项目采用 **专有许可（All Rights Reserved）**，**不是开源项目**。仅允许通过 GitHub 浏览参考；未经作者书面许可，禁止复制、修改、改编、分发、商用或再发布。完整法律条款见 [LICENSE](LICENSE)。
 
-仅供浏览参考，未经书面许可，禁止复制、修改、分发。本项目未附带任何开源许可证；除浏览参考外的一切使用（复制、修改、分发、商用、再发布）均须先获得作者书面许可。部分代码由 AI 辅助生成，已经过人工审阅与修改。
+本项目不接受未经事先书面同意的代码贡献；提交 Issue 或 Pull Request 不代表获得任何授权。部分代码由 AI 辅助生成，已经过人工审阅与修改。第三方组件（如有）仍受其各自许可证约束。

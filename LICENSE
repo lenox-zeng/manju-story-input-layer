@@ -1,0 +1,79 @@
+Copyright (c) 2026 lenox-zeng. All rights reserved.
+
+MANJU STORY INPUT LAYER — PROPRIETARY LICENSE
+
+This repository and all of its contents, including but not limited to source
+code, documentation, prompts, schemas, diagrams, text, and any other materials
+(collectively, the "Work"), are proprietary and protected by copyright and
+other applicable intellectual property laws.
+
+1. LIMITED PERMISSION TO VIEW
+
+You may view and read the Work directly through GitHub’s web interface for
+personal, non-commercial reference only. This limited permission does NOT
+grant you the right to download, copy, store, or reproduce the Work locally
+or elsewhere. All rights not expressly granted in this License are reserved.
+
+2. NO LICENSE OR OTHER RIGHTS GRANTED
+
+No license, permission, or other right is granted, whether expressly, by
+implication, estoppel, or otherwise, except for the limited viewing permission
+stated in Section 1.
+
+Without prior written permission from the copyright holder, you may not:
+  a. copy, reproduce, download, store the Work, in whole or in part;
+  b. modify, adapt, translate, or create derivative works of the Work;
+  c. distribute, publish, sublicense, sell, rent, lease, or otherwise make the
+     Work available to any third party;
+  d. use the Work for any commercial purpose;
+  e. use the Work, including embedded prompts, schemas, sample scripts and
+     structured data, to train, fine-tune, evaluate, or otherwise develop any
+     machine-learning model or dataset;
+  f. remove, alter, or obscure any copyright, attribution, or proprietary
+     notice contained in the Work.
+
+3. NO CONTRIBUTION LICENSE
+
+This repository is NOT open source. Do not submit code, documentation, or other
+materials unless the copyright holder has expressly agreed in writing to accept
+them. Submitting an issue, pull request, or other contribution does not grant
+you any rights in the Work, nor does it grant the copyright holder any license
+to your submission. Any accepted contribution requires a separate written
+agreement.
+
+4. THIRD-PARTY MATERIALS
+
+If the Work contains or links to third-party materials, those materials remain
+subject to their own licenses and terms. Nothing in this License grants rights
+to third-party materials beyond what their respective licenses permit. The
+copyright holder’s rights in the Work are not reduced by any third-party license.
+
+5. NO WARRANTY
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE COPYRIGHT HOLDER DOES NOT
+WARRANT THAT THE WORK IS ERROR-FREE, SECURE, OR SUITABLE FOR ANY PARTICULAR
+PURPOSE.
+
+6. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+7. PERMISSION REQUESTS
+
+For licensing, commercial use, republication, or any other permission request,
+contact the copyright holder through GitHub:
+https://github.com/lenox-zeng
+
+8. SEVERABILITY
+
+If any provision of this License is held to be invalid or unenforceable, that
+provision shall be severed to the minimum extent necessary, and the remaining
+provisions shall remain in full force and effect.
+
+This License is not an open-source license. No rights are granted except as
+expressly stated above.

@@ -4,16 +4,18 @@
 
 > **Copyright**
 >
-> **All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+> **Copyright (c) 2026 lenox-zeng. All Rights Reserved.**
+>
+> This is **proprietary software**, not open source. Viewing via GitHub is permitted for reference only. Copying, modification, adaptation, distribution, commercial use or re-publication requires prior written permission. See [LICENSE](LICENSE) for the full terms.
 >
 > Some code is AI-assisted and has been human-reviewed and revised.
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![Contract](https://img.shields.io/badge/contract-v10.3-green)
-![Tests](https://img.shields.io/badge/tests-262%20passed-brightgreen)
+![Contract](https://img.shields.io/badge/contract-v10.2-green)
+![Tests](https://img.shields.io/badge/tests-243%20passed%20%2F%206%20skipped-brightgreen)
 ![GPU](https://img.shields.io/badge/GPU-not%20required-lightgrey)
 
-[中文](./README.md) · [Quick Start](#quick-start) · [Two Ways to Use](#two-ways-to-use) · [Docs](#docs) · Version v2.0 / Contract v10.2
+[中文](./README.md) · [Quick Start](#quick-start) · [Two Ways to Use](#two-ways-to-use) · [Docs](#docs) · [License](LICENSE) · Version v2.0 / Input contract v10.3 / Output contract v10.2
 
 Manju is an automated **novel → screenplay → storyboard → render contract** pipeline. It fully separates "writing a story" from "operating AI models": drop in a novel, and it handles parsing, compression, episode splitting, screenplay writing and storyboarding — finally producing a **purely structured, engine-agnostic render contract**. Whether the downstream uses ComfyUI, Seedance or any other engine, it only consumes this contract.
 
@@ -447,6 +449,8 @@ Covers: parse/encode/chapter fallback → auto/manual episode split → long-tex
 
 ## Contributing
 
+> This is proprietary software. External code contributions are not accepted without the author's prior written agreement. The checks below are for the author and authorized collaborators.
+
 - Run the offline acceptance suite before submitting: `python scripts\verify_offline.py` (expected **243 passed / 6 skipped**).
 - After touching `manju/schemas.py` or the contract doc, run `python scripts\check_contract_sync.py` to check field coverage.
 - Never commit `config.json`, real API keys, `state/`, or private novels under `input/`; these paths are ignored by `.gitignore`.
@@ -455,6 +459,6 @@ Covers: parse/encode/chapter fallback → auto/manual episode split → long-tex
 
 ## License
 
-**All Rights Reserved.** You may view this repository for reference only. No copying, modification or redistribution is permitted without my written permission.
+This project is **proprietary software** licensed under an **All Rights Reserved** license; it is **not open source**. Viewing via GitHub is permitted for reference only. Copying, modification, adaptation, distribution, commercial use or re-publication requires prior written permission from the copyright holder. See [LICENSE](LICENSE) for the full legal terms.
 
-For reference only; copying, modification or redistribution without written permission is prohibited. This repository carries no open-source license; any use beyond viewing for reference (copying, modification, redistribution, commercial use, re-publication) requires the author's written permission. Some code is AI-assisted and has been human-reviewed and revised.
+Code contributions are not accepted without prior written agreement; submitting an issue or pull request does not grant any rights. Some code is AI-assisted and has been human-reviewed and revised. Third-party components, if any, remain subject to their own licenses.
